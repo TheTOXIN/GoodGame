@@ -1,3 +1,4 @@
 # GoodGame
-OMG Why we do it... please help me
+- OMG Why we do it... please help me
+- NO
 
