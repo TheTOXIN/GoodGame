@@ -6,7 +6,7 @@ import java.awt.Point;
 
 class View extends JComponent
 {
-	private ArrayList<Player> players;
+	public ArrayList<Player> players;
 
 	public View()
 	{

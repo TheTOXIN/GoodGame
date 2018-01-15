@@ -1,5 +1,7 @@
 import javax.swing.JFrame;
 
+import java.awt.Color;
+
 class Main
 {
 	static final String TITLE = "GOOD GAME";
@@ -16,5 +18,12 @@ class Main
 		window.add(view);
 		
 		window.setVisible(true);
+		
+		Player p1 = new Player();
+		p1.setName("p1");
+		p1.setLocation(0, 0);
+		p1.setSize(25);
+		p1.setColor(Color.green);
+		view.players.add(p1);
 	}
 }

@@ -17,6 +17,7 @@ class Player
 	public String getName(){return name;}
 	
 	public void setLocation(Point location){this.location = location;}
+	public void setLocation(int x, int y){this.location = new Point(x, y);}
 	public Point getLocation(){return location;}
 	
 	public void setColor(Color color){this.color = color;}
