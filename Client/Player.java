@@ -40,6 +40,9 @@ class Player
 	public void setSize(int size){this.size = size;}
 	public int getSize(){return size;}
 	
+	public int getStep() {return step;}
+	public void setStep(int step) {this.step = step;}
+
 	public void stepUp()
 	{
 		location.move(0, -step);

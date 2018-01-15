@@ -33,7 +33,6 @@ public class Connector {
 				String message = br.readLine();
 				out.writeUTF(message);
            		out.flush();
-           		System.out.println("TEST");
 			}
         } catch (Exception e) {
         	System.out.println("SUKA BLYAT");
