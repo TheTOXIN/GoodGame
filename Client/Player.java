@@ -1,6 +1,7 @@
 import java.awt.Color;
 import java.awt.Point;
 import java.util.Random;
+import java.awt.Rectangle;
 
 class Player
 {
@@ -12,7 +13,7 @@ class Player
 	
 	public Player()
 	{
-		this.step = 20;
+		this.step = 1;
 	}
 	
 	public Player(String name, Point location, int size)
@@ -24,7 +25,7 @@ class Player
 		this.size = size;
 		
 		color = new Color(r.nextInt(255), r.nextInt(255), r.nextInt(255));
-		this.step = 20;
+		this.step = 1;
 	}
 	
 	public void setName(String name){this.name = name;}
@@ -40,26 +41,34 @@ class Player
 	public void setSize(int size){this.size = size;}
 	public int getSize(){return size;}
 	
+<<<<<<< HEAD
 	public int getStep() {return step;}
 	public void setStep(int step) {this.step = step;}
 
+=======
+	public Rectangle getRectangle()
+	{
+		return new Rectangle((int)location.getX(), (int)location.getY(), size, size);
+	}
+	
+>>>>>>> ed19e89772804b1779be250650b56721df4f0749
 	public void stepUp()
 	{
-		location.move(0, -step);
+		location.translate(0, -step);
 	}
 	
 	public void stepLeft()
 	{
-		location.move(-step, 0);
+		location.translate(-step, 0);
 	}
 	
 	public void stepRight()
 	{
-		location.move(step, 0);
+		location.translate(step, 0);
 	}
 	
 	public void stepDown()
 	{
-		location.move(0, step);
+		location.translate(0, step);
 	}
 }
