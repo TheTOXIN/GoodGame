@@ -41,17 +41,14 @@ class Player
 	public void setSize(int size){this.size = size;}
 	public int getSize(){return size;}
 	
-<<<<<<< HEAD
 	public int getStep() {return step;}
 	public void setStep(int step) {this.step = step;}
 
-=======
 	public Rectangle getRectangle()
 	{
 		return new Rectangle((int)location.getX(), (int)location.getY(), size, size);
 	}
-	
->>>>>>> ed19e89772804b1779be250650b56721df4f0749
+
 	public void stepUp()
 	{
 		location.translate(0, -step);
