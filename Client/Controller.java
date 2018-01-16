@@ -40,23 +40,11 @@ class Controller implements KeyListener, ActionListener
 		if(isDown)
 			player.stepDown();
 		v.repaint();
-		//System.out.println(player.getLocation().getX() + " " +  player.getLocation().getY());
 	}
 
 	@Override
 	public void keyPressed(KeyEvent e)
-	{
-		//System.out.println(e.getKeyCode());
-		/*int key = e.getKeyCode();
-		if (key == 87)
-			isUp = true;
-		if (key == 65)
-			isLeft = true;
-		if (key == 68)
-			isRight = true;
-		if (key == 83)
-			isDown = true;*/
-		
+	{		
 		switch(e.getKeyCode())
 		{
 			case 87://w
@@ -72,8 +60,6 @@ class Controller implements KeyListener, ActionListener
 				isDown = true;
 				break;
 		}
-		
-		//System.out.println(player.getLocation().getX() + " " +  player.getLocation().getY());
 	}
 	
 	@Override

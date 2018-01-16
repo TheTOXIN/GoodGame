@@ -41,7 +41,6 @@ class View extends JComponent implements ActionListener
 	public void paintComponent(Graphics g)
 	{
 		g.setColor(Color.black);
-		//g.fillRect(0, 0, this.getWidth(), this.getHeight());
 		Player p;
 		Point loc;
 		int s;
