@@ -25,7 +25,7 @@ public class Eventer implements Runnable {
 
 			while (!client.isClosed()) {
 				String message = in.readUTF();
-				System.out.println("Client-" + number+ " = " + message);
+				System.out.println("Client-" + number + " = " + message);
 				sender(message);
 			}
 

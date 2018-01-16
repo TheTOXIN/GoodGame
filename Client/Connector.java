@@ -2,7 +2,14 @@ import java.io.*;
 import java.net.*;
 
 public class Connector {
-	public static void main(String[] args) throws InterruptedException {
+
+	private Player player;
+
+	public Connector(Player player) {
+		this.player = player;
+	}
+
+	public void connect() throws InterruptedException {
 		try {
 			Socket socket = new Socket("localhost", 2504);
 			
@@ -12,27 +19,29 @@ public class Connector {
 			DataInputStream in = new DataInputStream(socket.getInputStream());
 
 			System.out.println("Connect to server...");
-			System.out.println("Input message: ");
 
-			new Thread(new Runnable(){
-				@Override
-				public void run() {
-					try {
-						while (!socket.isInputShutdown()) {
-							String message = in.readUTF();
-							System.out.println("Message:" + message);
+			new Thread(() -> {
+                try {
+                    while (!socket.isInputShutdown()) {
+                    	String str = in.readUTF();
+                        Player p = Mapper.toPlayer(str);
+
+						if (Main.players.contains(p)) {
+							Main.players.remove(p);
 						}
-					} catch (IOException e) {
-						System.out.println("Server otvalilsya");
-            			e.printStackTrace();
-        			}
-				}
-			}).start();
+						Main.players.add(p);
+					}
+                } catch (Exception e) {
+                    System.out.println("Server otvalilsya");
+                    e.printStackTrace();
+                }
+            }).start();
 
 			while (!socket.isOutputShutdown()) {
-				String message = br.readLine();
-				out.writeUTF(message);
+				String str = Mapper.toString(player);
+				out.writeUTF(str);
            		out.flush();
+           		Thread.sleep(10);
 			}
         } catch (Exception e) {
         	System.out.println("SUKA BLYAT");
