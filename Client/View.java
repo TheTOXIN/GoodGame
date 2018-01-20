@@ -1,52 +1,77 @@
-import javax.swing.JComponent;
-import java.awt.Graphics;
-import java.awt.Color;
-import java.awt.Point;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import javax.swing.Timer;
+import javafx.scene.Scene;
+import javafx.scene.Group;
+import javafx.scene.paint.Color;
+import javafx.scene.input.KeyCode;
+import javafx.animation.AnimationTimer;
+import javafx.scene.shape.Rectangle;
 
-class View extends JComponent implements ActionListener
+import java.util.Random;
+import java.util.ArrayList;
+import java.util.HashMap;
+
+public class View extends Scene
 {
-	private Timer timer;
-	private int repaintsPerSecond;
+	//private ArrayList<Player> players;
+	private Rectangle mainPlayer;
+	private Group root;
+	//private HashMap<KeyCode, Boolean> keys;
 
-	public View()
+	public View(Group root)
 	{
-		repaintsPerSecond = 30;
-		timer = new Timer(1000 / repaintsPerSecond, this);
-	}
+		super(root);
+		mainPlayer = new Rectangle();
+		this.root.getChildren().add(mainPlayer);
 	
-	public void start()
-	{
-		timer.start();
+		
 	}
-	
-	public void stop()
+
+	//@Override
+	/*public void start(Stage stage) throws Exception
 	{
-		timer.stop();
-	}
-	
-	@Override
-	public void actionPerformed(ActionEvent e)
-	{
-		repaint();
-	}
-	
-	@Override
-	public void paintComponent(Graphics g)
-	{
-		g.setColor(Color.black);
-		Player p;
-		Point loc;
-		int s;
-		for(int i = 0; i < Main.players.size(); i++)
+		int step = 2;
+		long delay = 1000 / 60;
+		Random r = new Random();
+		Color color = new Color(r.nextDouble(), r.nextDouble(), r.nextDouble(), 1);
+		
+		keys = new HashMap<>();
+		keys.put(KeyCode.UP, false);
+		keys.put(KeyCode.LEFT, false);
+		keys.put(KeyCode.RIGHT, false);
+		keys.put(KeyCode.DOWN, false);
+		
+		mainPlayer = new Rectangle(20, 20, color);
+		
+		root = new Group();
+		root.getChildren().add(mainPlayer);
+		
+		Scene scene = new Scene(root);
+		scene.setOnKeyPressed(event->
 		{
-			p = Main.players.get(i);
-			loc = p.getLocation();
-			s = p.getSize();
-			g.setColor(p.getColor());
-			g.fillRect((int)loc.getX(), (int)loc.getY(), s, s);
-		}
-	}
+			if(keys.get(event.getCode()) != null)
+				keys.put(event.getCode(), true);
+		});
+		scene.setOnKeyReleased(event->
+		{
+			if(keys.get(event.getCode()) != null)
+				keys.put(event.getCode(), false);
+		});
+		
+		AnimationTimer timer = new AnimationTimer() {
+            		@Override
+            		public void handle(long now)
+            		{
+				if(keys.getOrDefault(KeyCode.UP, false))
+					mainPlayer.setY(mainPlayer.getY() - step);
+				if(keys.getOrDefault(KeyCode.LEFT, false))
+					mainPlayer.setX(mainPlayer.getX() - step);
+				if(keys.getOrDefault(KeyCode.RIGHT, false))
+					mainPlayer.setX(mainPlayer.getX() + step);
+				if(keys.getOrDefault(KeyCode.DOWN, false))
+					mainPlayer.setY(mainPlayer.getY() + step);
+			}
+        	};
+        	timer.start();
+		
+		
+	}*/
 }

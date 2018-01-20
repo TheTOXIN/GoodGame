@@ -1,43 +1,79 @@
-import javax.swing.*;
+import javafx.application.Application;
+import javafx.stage.Stage;
+import javafx.scene.Scene;
+import javafx.scene.layout.Pane;
+import javafx.scene.Group;
+import javafx.scene.paint.Color;
+import javafx.scene.input.KeyCode;
+import javafx.animation.AnimationTimer;
+import javafx.scene.shape.Rectangle;
 
-import java.awt.Color;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Timer;
+import java.util.TimerTask;
 
-public class Main {
-	public static Connector con;
-	public static List<Player> players = new ArrayList<>();
+public class Main extends Application
+{
+	//private ArrayList<Player> players;
+	private Rectangle mainPlayer;
+	private Group root;
+	private HashMap<KeyCode, Boolean> keys;
 
-	private static final String TITLE = "GOOD GAME";
-	private static final int WINDOW_WIDTH = 480;
-	private static final int WINDOW_HEIGHT = WINDOW_WIDTH;
-	
-	public static void main(String args[]) throws InterruptedException {
-		JFrame window = new JFrame(TITLE);
-		window.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
-		window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-
-
-		Player p = new Player();
-		p.setName("p" + new Random().nextInt(100));
-		p.setLocation(0, 0);
-		p.setSize(25);
-		p.setColor(Color.black);
+	@Override
+	public void start(Stage stage) throws Exception
+	{
+		int step = 2;
+		long delay = 1000 / 60;
+		Random r = new Random();
+		Color color = new Color(r.nextDouble(), r.nextDouble(), r.nextDouble(), 1);
 		
-		View view = new View();
-		players.add(p);
-		window.add(view);
+		keys = new HashMap<>();
+		keys.put(KeyCode.UP, false);
+		keys.put(KeyCode.LEFT, false);
+		keys.put(KeyCode.RIGHT, false);
+		keys.put(KeyCode.DOWN, false);
 		
-		Controller controller = new Controller(p, 1000/60);
-		controller.v = view;
+		mainPlayer = new Rectangle(20, 20, color);
 		
-		window.addKeyListener(controller);
-		window.setVisible(true);
+		root = new Group();
+		//root.setPrefSize(480, 480);
+		root.getChildren().add(mainPlayer);
 		
-		controller.start();
-
-		con = new Connector(p);
-		con.connect();
+		Scene scene = new Scene(root);
+		scene.setOnKeyPressed(event->
+		{
+			if(keys.get(event.getCode()) != null)
+				keys.put(event.getCode(), true);
+		});
+		scene.setOnKeyReleased(event->
+		{
+			if(keys.get(event.getCode()) != null)
+				keys.put(event.getCode(), false);
+		});
+		
+		AnimationTimer timer = new AnimationTimer() {
+            		@Override
+            		public void handle(long now)
+            		{
+				if(keys.getOrDefault(KeyCode.UP, false))
+					mainPlayer.setY(mainPlayer.getY() - step);
+				if(keys.getOrDefault(KeyCode.LEFT, false))
+					mainPlayer.setX(mainPlayer.getX() - step);
+				if(keys.getOrDefault(KeyCode.RIGHT, false))
+					mainPlayer.setX(mainPlayer.getX() + step);
+				if(keys.getOrDefault(KeyCode.DOWN, false))
+					mainPlayer.setY(mainPlayer.getY() + step);
+			}
+        	};
+        	timer.start();
+		
+		stage.setTitle("GOODGAME");
+		stage.setResizable(false);
+		stage.setWidth(480);
+		stage.setHeight(480);
+		stage.setScene(scene);
+		stage.show();
 	}
 }
