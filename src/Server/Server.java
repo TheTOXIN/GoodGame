@@ -62,6 +62,8 @@ public class Server {
             eventer.eventNewConnection(packet);
         } else if (rule == Rule.MES) {
             eventer.eventSendMessage(packet);
+        } else if (rule == Rule.STA) {
+            eventer.updateState(packet);
         }
     }
 }

@@ -30,4 +30,10 @@ public class Eventer {
         server.sender.sendAll(data);
         System.out.println(Parse.getMes(data));
     }
+
+    public void updateState(DatagramPacket packet) {
+        String data = Parse.build(Rule.STA, Parse.getMes(Parse.getStr(packet)));
+        server.sender.sendAll(data);
+        System.out.println(Parse.getMes(data));
+    }
 }

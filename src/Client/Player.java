@@ -1,5 +1,7 @@
 package Client;
 
+import Utill.State;
+
 import java.awt.Color;
 import java.awt.Point;
 import java.util.Random;
@@ -12,6 +14,7 @@ class Player
 	private Color color;
 	private int size;
 	private int step;
+	public State state;
 	
 	public Player()
 	{
@@ -28,8 +31,17 @@ class Player
 		
 		color = new Color(r.nextInt(255), r.nextInt(255), r.nextInt(255));
 		this.step = 1;
+		this.state = State.NONE;
 	}
-	
+
+	public State getState() {
+		return state;
+	}
+
+	public void setState(State state) {
+		this.state = state;
+	}
+
 	public void setName(String name){this.name = name;}
 	public String getName(){return name;}
 	

@@ -1,12 +1,9 @@
 package Client;
 
-import javax.swing.JComponent;
-import java.awt.Graphics;
-import java.awt.Color;
-import java.awt.Point;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import javax.swing.Timer;
 
 class View extends JComponent implements ActionListener
 {
@@ -38,6 +35,7 @@ class View extends JComponent implements ActionListener
 	@Override
 	public void paintComponent(Graphics g)
 	{
+		Graphics2D g2D = (Graphics2D) g;
 		g.setColor(Color.black);
 		Player p;
 		Point loc;
@@ -47,8 +45,11 @@ class View extends JComponent implements ActionListener
 			p = Main.players.get(i);
 			loc = p.getLocation();
 			s = p.getSize();
-			g.setColor(p.getColor());
-			g.fillRect((int)loc.getX(), (int)loc.getY(), s, s);
+			g2D.setColor(p.getColor());
+			g2D.fillRect((int)loc.getX(), (int)loc.getY(), s, s);
+
+			g2D.setColor(Color.BLACK);
+			g2D.drawString(p.getName(), (int)loc.getX() - 10, (int)loc.getY() - 5);
 		}
 	}
 }

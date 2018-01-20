@@ -1,5 +1,7 @@
 package Client;
 
+import Utill.Parse;
+
 import java.awt.*;
 
 public class Mapper {
@@ -13,7 +15,8 @@ public class Mapper {
                 player.getColor().getGreen() + " " +
                 player.getColor().getBlue() + "/";
         res += player.getSize() + "/";
-        res += player.getStep();
+        res += player.getStep() + "/";
+        res += player.getState().name();
 
         return res;
     }
@@ -35,6 +38,7 @@ public class Mapper {
 
         res.setSize(Integer.parseInt(mapping[3]));
         res.setStep(Integer.parseInt(mapping[4]));
+        res.setState(Parse.getStat(mapping[5]));
 
         return res;
     }

@@ -17,6 +17,16 @@ public class Parse {
         return null;
     }
 
+    //Парсинг строчки в соситояние из пакета
+    public static State getStat(String data) {
+        for (State state : State.values()) {
+            if (data.equals(state.name())) {
+                return state;
+            }
+        }
+        return null;
+    }
+
     //Парсинг сообщение из пакета
     public static String getMes(String data) {
         return data.substring(3, data.indexOf(Rule.END.name()));
