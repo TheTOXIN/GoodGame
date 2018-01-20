@@ -1,9 +1,21 @@
+<<<<<<< HEAD:Client/View.java
 import javafx.scene.Scene;
 import javafx.scene.Group;
 import javafx.scene.paint.Color;
 import javafx.scene.input.KeyCode;
 import javafx.animation.AnimationTimer;
 import javafx.scene.shape.Rectangle;
+=======
+package Client;
+
+import javax.swing.JComponent;
+import java.awt.Graphics;
+import java.awt.Color;
+import java.awt.Point;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import javax.swing.Timer;
+>>>>>>> ae256ee7de16ae6fe981ebcef40d278f78d88496:src/Client/View.java
 
 import java.util.Random;
 import java.util.ArrayList;
