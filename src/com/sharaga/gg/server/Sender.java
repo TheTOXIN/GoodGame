@@ -1,4 +1,4 @@
-package Server;
+package com.sharaga.gg.server;
 
 import java.io.IOException;
 

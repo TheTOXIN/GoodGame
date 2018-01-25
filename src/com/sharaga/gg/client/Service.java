@@ -1,7 +1,9 @@
-package Client;
+package com.sharaga.gg.client;
 
-import Utill.Parse;
-import Utill.Rule;
+import com.sharaga.gg.utill.Mapper;
+import com.sharaga.gg.utill.Parse;
+import com.sharaga.gg.utill.Player;
+import com.sharaga.gg.utill.Rule;
 
 /**
  * Основной класс для управления пакетами
@@ -18,7 +20,7 @@ public class Service {
     }
 
     public void login() {
-        con.send(Parse.build(Rule.CON, Main.player.getName()));
+        con.send(Parse.build(Rule.CON, Main.name));
         String data = con.receive();
 
         Rule answer = Parse.getRule(data);
@@ -33,7 +35,7 @@ public class Service {
                 String message = Parse.getMes(data);
                 Rule rule = Parse.getRule(data);
 
-                if (Rule.STA == rule) {
+                if (Rule.UPD == rule) {
                     refresh(message);
                 }
             }
@@ -41,23 +43,12 @@ public class Service {
     }
 
     public void refresh(String message) {
-        Player mapper = Mapper.toPlayer(message);
-
-        if (!Main.players.contains(mapper)) {
-            Main.players.add(mapper);
-        }
-
-        for (Player p : Main.players) {
-            if (mapper.equals(p)) {
-                p.setState(mapper.getState());
-            }
-        }
+        Player p = Mapper.toPlayer(message);
+        Main.players.put(p.getName(), p);
     }
 
     public void informer() {
-        new Thread(() -> {
-            String message = Mapper.toString(Main.player);
-            con.send(Parse.build(Rule.STA, message));
-        }).start();
+        String message = Mapper.toString(Main.players.get(Main.name));
+        con.send(Parse.build(Rule.STA, message));
     }
 }

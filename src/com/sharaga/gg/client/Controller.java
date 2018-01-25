@@ -1,6 +1,7 @@
-package Client;
+package com.sharaga.gg.client;
 
-import Utill.State;
+import com.sharaga.gg.utill.Player;
+import com.sharaga.gg.utill.State;
 
 import java.awt.event.KeyListener;
 import java.awt.event.KeyEvent;
@@ -12,13 +13,11 @@ class Controller implements KeyListener, ActionListener
 {
 	public View v;
 	private Service ser;
-	private Player player;
 	private Timer timer;
 	private boolean isUp, isLeft, isRight, isDown;
 	
-	public Controller(Player player, Service ser, int delay)
+	public Controller(Service ser, int delay)
 	{
-		this.player = player;
 		this.ser = ser;
 		timer = new Timer(delay, this);
 	}
@@ -36,74 +35,72 @@ class Controller implements KeyListener, ActionListener
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{
-		for (Player p : Main.players) {
-			if (p.state == State.UP)
-				p.stepUp();
-			if (p.state == State.LEFT)
-				p.stepLeft();
-			if (p.state == State.RIGHT)
-				p.stepRight();
-			if (p.state == State.DOWN)
-				p.stepDown();
-		}
-
+		Player p = Main.players.get(Main.name);
+		//TODO add else
+		if (isUp)
+			p.state = State.UP;
+		if (isLeft)
+			p.state = State.LEFT;
+		if (isRight)
+			p.state = State.RIGHT;
+		if (isDown)
+			p.state = State.DOWN;
+			
+		ser.informer();
 		v.repaint();
 	}
 
 	@Override
 	public void keyPressed(KeyEvent e)
 	{
-		State prev = player.state;
+		Player p = Main.players.get(Main.name);
+
 		switch(e.getKeyCode())
 		{
 			case 87://w
-				//isUp = true;
-				player.state = State.UP;
+				isUp = true;
+				p.state = State.UP;
 				break;
 			case 65://a
-				//isLeft = true;
-				player.state = State.LEFT;
+				isLeft = true;
+				p.state = State.LEFT;
 				break;
 			case 68://d
-				//isRight = true;
-				player.state = State.RIGHT;
+				isRight = true;
+				p.state = State.RIGHT;
 				break;
 			case 83://s
-				//isDown = true;
-				player.state = State.DOWN;
+				isDown = true;
+				p.state = State.DOWN;
 				break;
 		}
-		if (prev != player.state)
-			ser.informer();
 	}
 	
 	@Override
 	public void keyReleased(KeyEvent e)
 	{
-		State prev = player.state;
+		Player p = Main.players.get(Main.name);
 		switch(e.getKeyCode())
 		{
 			case 87://w
-				//isUp = false;
-				player.state = State.NONE;
+				isUp = false;
+				p.state = State.NONE;
 				break;
 			case 65://a
-				//isLeft = false;
-				player.state = State.NONE;
+				isLeft = false;
+				p.state = State.NONE;
 				break;
 			case 68://d
-				//isRight = false;
-				player.state = State.NONE;
+				isRight = false;
+				p.state = State.NONE;
 				break;
 			case 83://s
-				//isDown = false;
-				player.state = State.NONE;
+				isDown = false;
+				p.state = State.NONE;
 				break;
 		}
-		if (prev != player.state)
-			ser.informer();
 	}
-	
+
 	@Override
 	public void keyTyped(KeyEvent e)
 	{

@@ -1,4 +1,4 @@
-package Utill;
+package com.sharaga.gg.utill;
 
 import java.net.DatagramPacket;
 
@@ -17,6 +17,11 @@ public class Parse {
         return null;
     }
 
+    //Парсинг дейтаграммы в правило
+    public static Rule getRule(DatagramPacket packet) {
+        return getRule(getStr(packet));
+    }
+
     //Парсинг строчки в соситояние из пакета
     public static State getStat(String data) {
         for (State state : State.values()) {
@@ -30,6 +35,11 @@ public class Parse {
     //Парсинг сообщение из пакета
     public static String getMes(String data) {
         return data.substring(3, data.indexOf(Rule.END.name()));
+    }
+
+    //Парсинг сообщение из дейтаграммы
+    public static String getMes(DatagramPacket packet) {
+        return getMes(getStr(packet));
     }
 
     //Парсинг пакета байтов в строчку

@@ -1,13 +1,11 @@
-package Client;
-
-import Utill.State;
+package com.sharaga.gg.utill;
 
 import java.awt.Color;
 import java.awt.Point;
 import java.util.Random;
 import java.awt.Rectangle;
 
-class Player
+public class Player
 {
 	private String name;
 	private Point location;

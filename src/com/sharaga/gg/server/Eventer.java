@@ -1,7 +1,6 @@
-package Server;
+package com.sharaga.gg.server;
 
-import Utill.Parse;
-import Utill.Rule;
+import com.sharaga.gg.utill.*;
 
 import java.net.DatagramPacket;
 
@@ -32,7 +31,23 @@ public class Eventer {
     }
 
     public void updateState(DatagramPacket packet) {
-        String data = Parse.build(Rule.STA, Parse.getMes(Parse.getStr(packet)));
+        String message = Parse.getMes(packet);
+
+        Player p = Mapper.toPlayer(message);
+        State state = p.getState();
+
+        if (state == State.UP) {
+            p.stepUp();
+        } else if (state == State.DOWN) {
+            p.stepDown();
+        } else if (state == State.LEFT) {
+            p.stepLeft();
+        } else if (state == State.RIGHT) {
+            p.stepRight();
+        }
+        message = Mapper.toString(p);
+
+        String data = Parse.build(Rule.UPD, message);
         server.sender.sendAll(data);
         System.out.println(Parse.getMes(data));
     }

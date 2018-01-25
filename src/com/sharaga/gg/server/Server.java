@@ -1,7 +1,7 @@
-package Server;
+package com.sharaga.gg.server;
 
-import Utill.Parse;
-import Utill.Rule;
+import com.sharaga.gg.utill.Parse;
+import com.sharaga.gg.utill.Rule;
 
 import java.io.IOException;
 import java.net.DatagramPacket;

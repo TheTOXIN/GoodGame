@@ -1,9 +1,12 @@
-package Client;
+package com.sharaga.gg.client;
+
+import com.sharaga.gg.utill.Player;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.util.Map;
 
 class View extends JComponent implements ActionListener
 {
@@ -40,14 +43,13 @@ class View extends JComponent implements ActionListener
 		Player p;
 		Point loc;
 		int s;
-		for(int i = 0; i < Main.players.size(); i++)
-		{
-			p = Main.players.get(i);
+
+		for (Map.Entry entry : Main.players.entrySet()) {
+			p = (Player) entry.getValue();
 			loc = p.getLocation();
 			s = p.getSize();
 			g2D.setColor(p.getColor());
 			g2D.fillRect((int)loc.getX(), (int)loc.getY(), s, s);
-
 			g2D.setColor(Color.BLACK);
 			g2D.drawString(p.getName(), (int)loc.getX() - 10, (int)loc.getY() - 5);
 		}

@@ -1,6 +1,4 @@
-package Client;
-
-import Utill.Parse;
+package com.sharaga.gg.utill;
 
 import java.awt.*;
 
