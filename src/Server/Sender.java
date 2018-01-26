@@ -1,5 +1,7 @@
 package Server;
 
+import Utill.Parse;
+
 import java.io.IOException;
 
 public class Sender {
@@ -19,6 +21,14 @@ public class Sender {
             server.socket.send(user.getPacket());
         } catch (IOException e) {
             System.out.println("Send - ERROR");
+        }
+    }
+
+    public void sendOther(String data) {
+        for (User user : server.users) {
+            if (!Parse.getName(data).equals(user.getName())) {
+                send(user, data);
+            }
         }
     }
 

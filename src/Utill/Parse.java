@@ -17,6 +17,11 @@ public class Parse {
         return null;
     }
 
+    //Имя юзера с сообщения
+    public static String getName(String data) {
+        return getMes(data).substring(0, getMes(data).indexOf("/"));
+    }
+
     //Парсинг сообщение из пакета
     public static String getMes(String data) {
         return data.substring(3, data.indexOf(Rule.END.name()));

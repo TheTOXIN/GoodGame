@@ -26,8 +26,8 @@ public class Eventer {
     }
 
     public void eventSendMessage(DatagramPacket packet) {
-        String data = Parse.build(Rule.MES, Parse.getMes(Parse.getStr(packet)));
-        server.sender.sendAll(data);
+        String data = Parse.build(Rule.STA, Parse.getMes(Parse.getStr(packet)));
+        server.sender.sendOther(data);
         System.out.println(Parse.getMes(data));
     }
 }

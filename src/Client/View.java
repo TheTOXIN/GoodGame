@@ -30,7 +30,6 @@ public class View extends JComponent {
 
 		g2.setColor(p.getColor());
 		g2.fillRect((int)loc.getX(), (int)loc.getY(), p.getSize(), p.getSize());
-		System.out.println((int)loc.getX() +  " / " + (int)loc.getY());
 		g2.setColor(Color.black);
 		g2.drawString(p.getName(), (int)loc.getX(), (int)loc.getY());
 	}
