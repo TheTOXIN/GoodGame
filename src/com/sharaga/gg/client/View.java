@@ -1,11 +1,8 @@
-package Client;
+package com.sharaga.gg.client;
 
 import javax.swing.JComponent;
 import java.awt.*;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 import java.util.Map;
-import javax.swing.Timer;
 
 public class View extends JComponent {
 	private Game game;

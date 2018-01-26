@@ -1,4 +1,4 @@
-package Utill;
+package com.sharaga.gg.utill;
 
 /**
  * Состояния игрока

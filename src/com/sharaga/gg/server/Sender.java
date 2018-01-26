@@ -1,6 +1,6 @@
-package Server;
+package com.sharaga.gg.server;
 
-import Utill.Parse;
+import com.sharaga.gg.utill.Parse;
 
 import java.io.IOException;
 

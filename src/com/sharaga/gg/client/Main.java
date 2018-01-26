@@ -1,4 +1,4 @@
-package Client;
+package com.sharaga.gg.client;
 
 import javax.swing.*;
 

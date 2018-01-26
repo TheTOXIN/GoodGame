@@ -1,7 +1,7 @@
-package Client;
+package com.sharaga.gg.client;
 
-import Utill.Parse;
-import Utill.Rule;
+import com.sharaga.gg.utill.Parse;
+import com.sharaga.gg.utill.Rule;
 
 /**
  * Основной класс для управления пакетами

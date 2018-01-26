@@ -1,4 +1,4 @@
-package Server;
+package com.sharaga.gg.server;
 
 public class Run {
     public static void main(String[] args) {

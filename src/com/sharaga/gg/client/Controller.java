@@ -1,4 +1,4 @@
-package Client;
+package com.sharaga.gg.client;
 
 import java.awt.event.KeyListener;
 import java.awt.event.KeyEvent;

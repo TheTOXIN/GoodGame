@@ -1,4 +1,4 @@
-package Server;
+package com.sharaga.gg.server;
 
 import java.net.DatagramPacket;
 import java.net.InetAddress;
