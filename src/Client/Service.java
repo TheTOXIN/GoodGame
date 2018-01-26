@@ -8,15 +8,15 @@ import Utill.Rule;
  */
 public class Service {
     private Connector con;
-    private Player player;
+    private Game game;
 
-    public Service(Connector con, Player player) {
+    public Service(Connector con, Game game) {
         this.con = con;
-        this.player = player;
+        this.game = game;
     }
 
     public void login() {
-        con.send(Parse.build(Rule.CON, player.getName()));
+        con.send(Parse.build(Rule.CON, game.player.getName()));
         Rule answer = Parse.getRule(con.receive());
         con.isConnected = answer == Rule.TRU;
     }
@@ -33,28 +33,17 @@ public class Service {
                 String message = Parse.getMes(data);
                 Rule rule = Parse.getRule(data);
 
-                if (Rule.MES == rule) {
+                if (Rule.STA == rule) {
+                    System.out.println(message);
                     Player p = Mapper.toPlayer(message);
-                    if (Main.players.contains(p)) {
-                        Main.players.remove(p);
-                    }
-                    Main.players.add(p);
+                    game.players.put(p.getName(), p);
                 }
             }
         }).start();
     }
 
     public void informer() {
-        new Thread(() -> {
-            while (con.isConnected) {
-                try {
-                    Thread.sleep(10);
-                    String message = Mapper.toString(player);
-                    con.send(Parse.build(Rule.MES, message));
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-        }).start();
+        String message = Mapper.toString(game.player);
+        con.send(Parse.build(Rule.STA, message));
     }
 }

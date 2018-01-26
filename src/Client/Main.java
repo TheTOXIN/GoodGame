@@ -2,53 +2,58 @@ package Client;
 
 import javax.swing.*;
 
-import java.awt.Color;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-
 public class Main {
-	public static String address = "localhost";
-	public static int port = 2504;
-
-	public static List<Player> players = new ArrayList<>();
-
 	private static final String TITLE = "GOOD GAME";
 	private static final int WINDOW_WIDTH = 480;
 	private static final int WINDOW_HEIGHT = WINDOW_WIDTH;
 
-	public static void main(String args[]) throws InterruptedException {
+	private static String address = "localhost";
+	private static int port = 2504;
+
+	private static Game game;
+	private static View view;
+	private static Service ser;
+	private static Connector con;
+	private static Controller control;
+
+	private static String name;
+
+	public static void main(String args[]) {
+		inputDate();
+
 		JFrame window = new JFrame(TITLE);
 		window.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
 		window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
-		Player p = new Player();
-		p.setName("p" + new Random().nextInt(100));
-		p.setLocation(0, 0);
-		p.setSize(25);
-		p.setColor(Color.black);
+		game = new Game(name);
+		view = new View(game);
 
-		View view = new View();
-		players.add(p);
+		con = new Connector(port, address);
+		ser = new Service(con, game);
+
+		control = new Controller(game.player, ser, view);
+		control.start();
+
 		window.add(view);
-
-		Controller controller = new Controller(p, 1000/60);
-		controller.v = view;
-
-		window.addKeyListener(controller);
+		window.addKeyListener(control);
 		window.setVisible(true);
 
-		controller.start();
-
-		Connector con = new Connector(port, address);
-		Service ser = new Service(con, p);
-
 		ser.login();
+
+		checkConnect();
+	}
+
+	private static void inputDate() {
+		address = JOptionPane.showInputDialog(null, "IP");
+		name = JOptionPane.showInputDialog(null, "NAME");
+	}
+
+	private static void checkConnect() {
 		if (con.isConnected) {
-			System.out.println("Connect to server!");
+			JOptionPane.showMessageDialog(null, "YOU CONNECT TO SERVER!!!");
 			ser.start();
 		} else {
-			System.out.println("Connect to problem...");
+			JOptionPane.showMessageDialog(null, "YOU CONNECT TO PROBLEM...");
 		}
 	}
 }

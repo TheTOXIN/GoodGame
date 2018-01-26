@@ -1,54 +1,37 @@
 package Client;
 
 import javax.swing.JComponent;
-import java.awt.Graphics;
-import java.awt.Color;
-import java.awt.Point;
+import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.util.Map;
 import javax.swing.Timer;
 
-class View extends JComponent implements ActionListener
-{
-	private Timer timer;
-	private int repaintsPerSecond;
+public class View extends JComponent {
+	private Game game;
 
-	public View()
-	{
-		repaintsPerSecond = 30;
-		timer = new Timer(1000 / repaintsPerSecond, this);
+	public View(Game game) {
+		this.game = game;
 	}
-	
-	public void start()
-	{
-		timer.start();
-	}
-	
-	public void stop()
-	{
-		timer.stop();
-	}
-	
+
 	@Override
-	public void actionPerformed(ActionEvent e)
-	{
-		repaint();
-	}
-	
-	@Override
-	public void paintComponent(Graphics g)
-	{
-		g.setColor(Color.black);
-		Player p;
-		Point loc;
-		int s;
-		for(int i = 0; i < Main.players.size(); i++)
-		{
-			p = Main.players.get(i);
-			loc = p.getLocation();
-			s = p.getSize();
-			g.setColor(p.getColor());
-			g.fillRect((int)loc.getX(), (int)loc.getY(), s, s);
+	public void paintComponent(Graphics g) {
+		Graphics2D g2 = (Graphics2D) g;
+
+		drawPlayer(game.getPlayer(), g2);
+		for (Map.Entry entry : game.getPlayers().entrySet()) {
+			Player p = (Player) entry.getValue();
+			drawPlayer(p, g2);
 		}
+	}
+
+	private void drawPlayer(Player p, Graphics2D g2) {
+		Point loc = p.getLocation();
+
+		g2.setColor(p.getColor());
+		g2.fillRect((int)loc.getX(), (int)loc.getY(), p.getSize(), p.getSize());
+		System.out.println((int)loc.getX() +  " / " + (int)loc.getY());
+		g2.setColor(Color.black);
+		g2.drawString(p.getName(), (int)loc.getX(), (int)loc.getY());
 	}
 }

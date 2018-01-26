@@ -6,33 +6,27 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.Timer;
 
-class Controller implements KeyListener, ActionListener
-{
-	public View v;
-
+public class Controller implements KeyListener, ActionListener {
 	private Player player;
 	private Timer timer;
+	private Service ser;
+	private View view;
+
 	private boolean isUp, isLeft, isRight, isDown;
 	
-	public Controller(Player player, int delay)
-	{
+	public Controller(Player player, Service ser, View view) {
+		this.ser = ser;
+		this.view = view;
 		this.player = player;
-		timer = new Timer(delay, this);
+		this.timer = new Timer(100/60, this);
 	}
 	
-	public void start()
-	{
+	public void start() {
 		timer.start();
 	}
-	
-	public void stop()
-	{
-		timer.stop();
-	}
-	
+
 	@Override
-	public void actionPerformed(ActionEvent e)
-	{
+	public void actionPerformed(ActionEvent e) {
 		if(isUp)
 			player.stepUp();
 		if(isLeft)
@@ -41,14 +35,14 @@ class Controller implements KeyListener, ActionListener
 			player.stepRight();
 		if(isDown)
 			player.stepDown();
-		v.repaint();
+
+		ser.informer();
+		view.repaint();
 	}
 
 	@Override
-	public void keyPressed(KeyEvent e)
-	{		
-		switch(e.getKeyCode())
-		{
+	public void keyPressed(KeyEvent e) {
+		switch(e.getKeyCode()) {
 			case 87://w
 				isUp = true;
 				break;
@@ -65,10 +59,8 @@ class Controller implements KeyListener, ActionListener
 	}
 	
 	@Override
-	public void keyReleased(KeyEvent e)
-	{
-		switch(e.getKeyCode())
-		{
+	public void keyReleased(KeyEvent e) {
+		switch(e.getKeyCode()) {
 			case 87://w
 				isUp = false;
 				break;
@@ -85,7 +77,6 @@ class Controller implements KeyListener, ActionListener
 	}
 	
 	@Override
-	public void keyTyped(KeyEvent e)
-	{
+	public void keyTyped(KeyEvent e) {
 	}
 }
