@@ -1,54 +1,34 @@
 package Client;
 
-import javax.swing.JComponent;
-import java.awt.Graphics;
-import java.awt.Color;
-import java.awt.Point;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import javax.swing.Timer;
+import javafx.application.Application;
+import javafx.stage.Stage;
+import javafx.scene.Scene;
+import javafx.scene.layout.Pane;
+import javafx.scene.shape.Rectangle;
 
-class View extends JComponent implements ActionListener
+import java.util.ArrayList;
+
+public class View
 {
-	private Timer timer;
-	private int repaintsPerSecond;
+	private Pane root;
 
 	public View()
 	{
-		repaintsPerSecond = 30;
-		timer = new Timer(1000 / repaintsPerSecond, this);
+		root = new Pane();
 	}
-	
-	public void start()
+
+	public void addRect(Rectangle r)
 	{
-		timer.start();
+		root.getChildren().add(r);
 	}
-	
-	public void stop()
+
+	public void render(Stage stage)
 	{
-		timer.stop();
-	}
-	
-	@Override
-	public void actionPerformed(ActionEvent e)
-	{
-		repaint();
-	}
-	
-	@Override
-	public void paintComponent(Graphics g)
-	{
-		g.setColor(Color.black);
-		Player p;
-		Point loc;
-		int s;
-		for(int i = 0; i < Main.players.size(); i++)
-		{
-			p = Main.players.get(i);
-			loc = p.getLocation();
-			s = p.getSize();
-			g.setColor(p.getColor());
-			g.fillRect((int)loc.getX(), (int)loc.getY(), s, s);
-		}
+		Scene scene = new Scene(root);
+
+		stage.setScene(scene);
+		stage.setWidth(Game.WINDOW_WIDTH);
+		stage.setHeight(Game.WINDOW_HEIGHT);
+		stage.show();
 	}
 }

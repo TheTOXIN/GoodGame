@@ -1,17 +1,18 @@
 package Client;
 
-import java.awt.*;
+//import java.awt.*;
+import javafx.scene.paint.Color;
 
 public class Mapper {
     public static String toString(Player player) {
         String res = "";
 
         res += player.getName() + "/";
-        res += player.getLocation().getX() + " " +
-                player.getLocation().getY() + "/";
-        res += player.getColor().getRed() + " " +
-                player.getColor().getGreen() + " " +
-                player.getColor().getBlue() + "/";
+        res += player.getX() + " " +
+                player.getY() + "/";
+        res += (int)(player.getColor().getRed() * 255) + " " +
+                (int)(player.getColor().getGreen() * 255) + " " +
+                (int)(player.getColor().getBlue() * 255) + "/";
         res += player.getSize() + "/";
         res += player.getStep();
 
@@ -26,12 +27,13 @@ public class Mapper {
 
         int x = (int)Double.parseDouble(mapping[1].split(" ")[0]);
         int y = (int)Double.parseDouble(mapping[1].split(" ")[1]);
-        res.setLocation(new Point(x, y));
+        res.setX(x);
+	res.setY(y);
 
         int r = Integer.parseInt(mapping[2].split(" ")[0]);
         int g = Integer.parseInt(mapping[2].split(" ")[1]);
         int b = Integer.parseInt(mapping[2].split(" ")[2]);
-        res.setColor(new Color(r, g, b));
+        res.setColor(Color.rgb(r, g, b));
 
         res.setSize(Integer.parseInt(mapping[3]));
         res.setStep(Integer.parseInt(mapping[4]));

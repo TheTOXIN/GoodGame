@@ -1,74 +1,115 @@
 package Client;
 
-import java.awt.Color;
 import java.awt.Point;
 import java.util.Random;
-import java.awt.Rectangle;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.paint.Color;
 
 class Player
 {
 	private String name;
-	private Point location;
+	private int x;
+	private int y;
 	private Color color;
 	private int size;
 	private int step;
+	private Rectangle rect;
 	
 	public Player()
 	{
+		Random r = new Random();
 		this.step = 1;
+		color = new Color(r.nextDouble(), r.nextDouble(), r.nextDouble(), 1);
 	}
 	
-	public Player(String name, Point location, int size)
+	public Player(String name, int x, int y, int size)
 	{
 		Random r = new Random();
 		
 		this.name = name;
-		this.location = location;
+		this.x = x;
+		this.y = y;
 		this.size = size;
 		
-		color = new Color(r.nextInt(255), r.nextInt(255), r.nextInt(255));
+		color = new Color(r.nextDouble() * 255, r.nextDouble() * 255, r.nextDouble() * 255, 1);
 		this.step = 1;
 	}
 	
 	public void setName(String name){this.name = name;}
 	public String getName(){return name;}
 	
-	public void setLocation(Point location){this.location = location;}
-	public void setLocation(int x, int y){this.location = new Point(x, y);}
-	public Point getLocation(){return location;}
-	
-	public void setColor(Color color){this.color = color;}
+	public void setX(int x)
+	{
+		if(rect != null)
+			rect.setX(x);
+		this.x = x;
+	}
+	public double getX(){return x;}
+
+	public void setY(int y)
+	{
+		if(rect != null)
+			rect.setY(y);
+		this.y = y;
+	}
+	public double getY(){return y;}
+
+	public void setColor(Color color)
+	{
+		this.color = color;
+		if(rect != null)
+		{
+			rect.setFill(color);
+		}
+	}
 	public Color getColor(){return color;}
-	
-	public void setSize(int size){this.size = size;}
+	public int getRed(){return (int)(color.getRed() * 255);}
+	public int getGreen(){return (int)(color.getGreen() * 255);}
+	public int getBlue(){return (int)(color.getBlue() * 255);}
+
+	public void setSize(int size)
+	{
+		this.size = size;
+		if(rect != null)
+		{
+			rect.setWidth(size);
+			rect.setHeight(size);
+		}
+	}
 	public int getSize(){return size;}
 	
 	public int getStep() {return step;}
 	public void setStep(int step) {this.step = step;}
 
-	public Rectangle getRectangle()
+	public void setRectangle(Rectangle r)
 	{
-		return new Rectangle((int)location.getX(), (int)location.getY(), size, size);
+		this.rect = r;
+		rect.setFill(color);
+		rect.setWidth(size);
+		rect.setHeight(size);
+		rect.setX(x);
+		rect.setY(y);
 	}
+	public Rectangle getRectangle(){return this.rect;}
 
 	public void stepUp()
 	{
-		location.translate(0, -step);
+		y -= step;
 	}
 	
 	public void stepLeft()
 	{
-		location.translate(-step, 0);
+		x -= step;
 	}
 	
 	public void stepRight()
 	{
-		location.translate(step, 0);
+		x += step;
 	}
 	
 	public void stepDown()
 	{
-		location.translate(0, step);
+		y += step;
 	}
 
 	@Override
