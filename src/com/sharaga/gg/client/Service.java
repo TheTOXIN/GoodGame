@@ -2,6 +2,7 @@ package com.sharaga.gg.client;
 
 import com.sharaga.gg.utill.Parse;
 import com.sharaga.gg.utill.Rule;
+import com.sun.xml.internal.ws.handler.ServerSOAPHandlerTube;
 
 /**
  * Основной класс для управления пакетами
@@ -17,8 +18,19 @@ public class Service {
 
     public void login() {
         con.send(Parse.build(Rule.CON, game.player.getName()));
-        Rule answer = Parse.getRule(con.receive());
-        con.isConnected = answer == Rule.TRU;
+
+        Thread ping = new Thread(() -> {
+            Rule answer = Parse.getRule(con.receive());
+            con.isConnected = answer == Rule.TRU;
+        });
+
+        try {
+            Thread.sleep(10000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        if (!con.isConnected) ping.interrupt();
     }
 
     public void start() {

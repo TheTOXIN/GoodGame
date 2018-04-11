@@ -9,5 +9,5 @@ public enum Rule {
     STA, //обновление состояния player
     END, //конец сообщение в пакете
     TRU, //ответ на пакет == true
-    FLS //ответ на пакет == false
+    FLS, //ответ на пакет == false
 }

@@ -19,6 +19,8 @@ public class Connector {
             this.port = port;
             this.ip = InetAddress.getByName(address);
             this.socket = new DatagramSocket();
+
+            this.isConnected = false;
         } catch (SocketException e) {
             System.out.println("Socket - ERROR");
         } catch (UnknownHostException e) {
