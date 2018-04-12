@@ -18,30 +18,30 @@ public class Main {
 
 	private static String name;
 
-	public static void main(String args[]) {
-		inputDate();
-
-		JFrame window = new JFrame(TITLE);
-		window.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
-		window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-
-		game = new Game(name);
-		view = new View(game);
-
-		con = new Connector(port, address);
-		ser = new Service(con, game);
-
-		control = new Controller(game.player, ser, view);
-		control.start();
-
-		window.add(view);
-		window.addKeyListener(control);
-		window.setVisible(true);
-
-		ser.login();
-
-		checkConnect();
-	}
+//	public static void main(String args[]) {
+//		inputDate();
+//
+//		JFrame window = new JFrame(TITLE);
+//		window.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
+//		window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+//
+//		game = new Game(name);
+//		view = new View(game);
+//
+//		con = new Connector(port, address);
+//		ser = new Service(con, game);
+//
+//		control = new Controller(game.player, ser, view);
+//		control.start();
+//
+//		window.add(view);
+//		window.addKeyListener(control);
+//		window.setVisible(true);
+//
+//		ser.login();
+//
+//		checkConnect();
+//	}
 
 	private static void inputDate() {
 		address = JOptionPane.showInputDialog(null, "IP");
