@@ -17,9 +17,9 @@ public class Parse {
         return null;
     }
 
-    //Имя юзера с сообщения
-    public static String getName(String data) {
-        return getMes(data).substring(0, getMes(data).indexOf("/"));
+    //Парсинг из пакета
+    public static String getMes(DatagramPacket packet) {
+        return Parse.getMes(Parse.getStr(packet));
     }
 
     //Парсинг сообщение из пакета

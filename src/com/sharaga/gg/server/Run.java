@@ -1,8 +1,18 @@
 package com.sharaga.gg.server;
 
+import com.sharaga.gg.server.model.World;
+import com.sharaga.gg.server.service.WoldService;
+
+import java.util.Collections;
+
 public class Run {
     public static void main(String[] args) {
-        Server server = new Server(2504);
+        System.out.println("-=RUN=-");
+
+        World world = WoldService.generate("HELLO WORLD");
+        Game game = new Game(world);
+
+        Server server = new Server(game, 2504);
         server.start();
     }
 }

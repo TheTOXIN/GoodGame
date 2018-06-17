@@ -2,11 +2,10 @@ package com.sharaga.gg.client;
 
 import com.sharaga.gg.utill.Parse;
 import com.sharaga.gg.utill.Rule;
+import com.sharaga.gg.utill.Settings;
 
-/**
- * Основной класс для управления пакетами
- */
 public class Service {
+
     private Connector con;
     private Game game;
 
@@ -16,9 +15,15 @@ public class Service {
     }
 
     public void login() {
-        con.send(Parse.build(Rule.CON, game.player.getName()));
-        Rule answer = Parse.getRule(con.receive());
+        con.send(Parse.build(Rule.CON, game.nick));
+        String data = con.receive();
+        Rule answer = Parse.getRule(data);
         con.isConnected = answer == Rule.TRU;
+        if (answer == Rule.TRU) game.players.put(game.nick, Mapper.toPlayer(Parse.getMes(data)));
+    }
+
+    public void logout() {
+        con.send(Parse.build(Rule.DIS, game.nick));
     }
 
     public void start() {
@@ -33,17 +38,34 @@ public class Service {
                 String message = Parse.getMes(data);
                 Rule rule = Parse.getRule(data);
 
-                if (Rule.STA == rule) {
-                    System.out.println(message);
+                if (Rule.CON == rule) {
                     Player p = Mapper.toPlayer(message);
                     game.players.put(p.getName(), p);
+                } else if (Rule.DIS == rule) {
+                    game.players.remove(message);
+                } else if (Rule.MAP == rule) {
+                    game.world = message;
                 }
             }
         }).start();
     }
 
     public void informer() {
-        String message = Mapper.toString(game.player);
-        con.send(Parse.build(Rule.STA, message));
+        if (!game.isSleep) {
+            String message = game.getPlayer().getName() + ":" + game.getPlayer().getState();//TODO Hmm
+            con.send(Parse.build(Rule.STA, message));
+            sleep();
+        }
     }
+
+    public void sleep() {
+        try {
+            game.isSleep = true;
+            Thread.sleep(Settings.PING);
+            game.isSleep = false;
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
 }

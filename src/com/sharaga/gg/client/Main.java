@@ -1,59 +1,74 @@
 package com.sharaga.gg.client;
 
+import com.sharaga.gg.utill.Settings;
+
 import javax.swing.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 
 public class Main {
 	private static final String TITLE = "GOOD GAME";
-	private static final int WINDOW_WIDTH = 480;
-	private static final int WINDOW_HEIGHT = WINDOW_WIDTH;
+	private static final int WINDOW_WIDTH = Settings.W * Settings.W;
+	private static final int WINDOW_HEIGHT = Settings.H * Settings.H + 30;
 
 	private static String address = "localhost";
 	private static int port = 2504;
 
-	private static Game game;
 	private static View view;
 	private static Service ser;
 	private static Connector con;
 	private static Controller control;
-
-	private static String name;
+	private static Game game = new Game();
 
 	public static void main(String args[]) {
 		inputDate();
 
-		JFrame window = new JFrame(TITLE);
-		window.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
-		window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-
-		game = new Game(name);
-		view = new View(game);
-
 		con = new Connector(port, address);
 		ser = new Service(con, game);
 
-		control = new Controller(game.player, ser, view);
-		control.start();
-
-		window.add(view);
-		window.addKeyListener(control);
-		window.setVisible(true);
-
 		ser.login();
 
-		checkConnect();
+		if (checkConnect()) {//TODO eventer on exit
+			JFrame window = new JFrame(TITLE);
+			window.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
+			window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+
+			view = new View(game);
+			control = new Controller(game.getPlayer(), ser, view);
+			control.start();
+
+			window.add(view);
+			window.addKeyListener(control);
+			window.setVisible(true);
+
+			setListener(window);
+		}
 	}
 
 	private static void inputDate() {
 		address = JOptionPane.showInputDialog(null, "IP");
-		name = JOptionPane.showInputDialog(null, "NAME");
+		game.nick = JOptionPane.showInputDialog(null, "NAME");
 	}
 
-	private static void checkConnect() {
+	private static boolean checkConnect() {
 		if (con.isConnected) {
 			JOptionPane.showMessageDialog(null, "YOU CONNECT TO SERVER!!!");
 			ser.start();
+			return true;
 		} else {
 			JOptionPane.showMessageDialog(null, "YOU CONNECT TO PROBLEM...");
+			return false;
 		}
+	}
+
+	public static void setListener(JFrame frame) {
+		frame.addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent e) {
+				System.out.println("ХУЙ");
+				ser.logout();
+				System.exit(0);
+			}
+		});
 	}
 }

@@ -1,41 +1,31 @@
 package com.sharaga.gg.client;
 
+import com.sharaga.gg.utill.State;
+
 import java.awt.*;
 
 public class Mapper {
-    public static String toString(Player player) {
-        String res = "";
-
-        res += player.getName() + "/";
-        res += player.getLocation().getX() + " " +
-                player.getLocation().getY() + "/";
-        res += player.getColor().getRed() + " " +
-                player.getColor().getGreen() + " " +
-                player.getColor().getBlue() + "/";
-        res += player.getSize() + "/";
-        res += player.getStep();
-
-        return res;
-    }
 
     public static Player toPlayer(String string) {
         Player res = new Player();
-        String[] mapping = string.split("/");
 
-        res.setName(mapping[0]);
-
-        int x = (int)Double.parseDouble(mapping[1].split(" ")[0]);
-        int y = (int)Double.parseDouble(mapping[1].split(" ")[1]);
-        res.setLocation(new Point(x, y));
-
-        int r = Integer.parseInt(mapping[2].split(" ")[0]);
-        int g = Integer.parseInt(mapping[2].split(" ")[1]);
-        int b = Integer.parseInt(mapping[2].split(" ")[2]);
-        res.setColor(new Color(r, g, b));
-
-        res.setSize(Integer.parseInt(mapping[3]));
-        res.setStep(Integer.parseInt(mapping[4]));
+        res.setName(toFind("name", string));
+        res.setColor(Color.decode(toFind("color", string)));
+        res.setState(State.valueOf(toFind("state", string)));
+        res.setScore(Integer.parseInt(toFind("score", string)));
 
         return res;
     }
+
+    private static String toFind(String param, String string) {
+        String[] fields = string.split("\n");
+        for (String str : fields) {
+            if (str.substring(0, str.indexOf(":")).equals(param)) {
+                return str.substring(str.indexOf(":") + 1, str.length());
+            }
+        }
+
+        return "";
+    }
+
 }

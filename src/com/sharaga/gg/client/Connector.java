@@ -3,10 +3,6 @@ package com.sharaga.gg.client;
 import java.io.IOException;
 import java.net.*;
 
-/**
- * Класс для соединения с сервером,
- * а так-же для передачи и принятия сообщений
- */
 public class Connector {
     private DatagramSocket socket;
     private InetAddress ip;
@@ -27,7 +23,7 @@ public class Connector {
     }
 
     public String receive() {
-        byte[] data = new byte[1024];
+        byte[] data = new byte[4096];
         DatagramPacket packet = new DatagramPacket(data, data.length);
 
         try {

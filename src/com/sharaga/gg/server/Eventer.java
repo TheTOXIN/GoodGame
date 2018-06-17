@@ -1,33 +1,64 @@
 package com.sharaga.gg.server;
 
+import com.sharaga.gg.server.model.Player;
+import com.sharaga.gg.server.model.User;
+import com.sharaga.gg.server.model.World;
+import com.sharaga.gg.server.service.PlayerService;
+import com.sharaga.gg.server.service.UserService;
+import com.sharaga.gg.server.service.WoldService;
 import com.sharaga.gg.utill.Parse;
 import com.sharaga.gg.utill.Rule;
+import com.sharaga.gg.utill.State;
 
 import java.net.DatagramPacket;
 
 public class Eventer {
+
     private Server server;
 
     public Eventer(Server server) {
         this.server = server;
     }
 
-    public void eventNewConnection(DatagramPacket packet) {
-        String name = Parse.getMes(Parse.getStr(packet));
-        User user = new User(name, packet);
+    public void newConnection(DatagramPacket packet) {
+        String name = Parse.getMes(packet);
+        User user = new User(packet);
 
-        if (!server.users.contains(user)) {
+        if (!UserService.exist(server.users, name)) {
+            Player player = PlayerService.create(name, server.game);
+            user.setPlayer(player);
+            String world = WoldService.string(server.game.world);
+            server.sender.send(user, Parse.build(Rule.TRU, PlayerService.string(player)));
+            server.sender.sendOther(user, Parse.build(Rule.CON, PlayerService.string(player)));
+            server.users.forEach(u -> server.sender.send(user, Parse.build(Rule.CON, PlayerService.string(u.getPlayer()))));
+            server.sender.send(user, Parse.build(Rule.MAP, world));
             server.users.add(user);
-            server.sender.send(user, Rule.TRU.name());
-            System.out.println("Connection - " + user);
         } else {
             server.sender.send(user, Rule.FLS.name());
         }
     }
 
-    public void eventSendMessage(DatagramPacket packet) {
-        String data = Parse.build(Rule.STA, Parse.getMes(Parse.getStr(packet)));
-        server.sender.sendOther(data);
-        System.out.println(Parse.getMes(data));
+    public void newDisonnection(DatagramPacket packet) {
+        String name = Parse.getMes(packet);
+        User user = UserService.find(server.users, name);
+        UserService.delete(server.users, user.getId());
+        WoldService.remove(server.game.world, user.getPlayer());
+        server.sender.sendOther(user, Parse.build(Rule.DIS, name));
+    }
+
+    public void updateState(DatagramPacket packet) {
+        String mes = Parse.getMes(packet);
+        String name = mes.substring(0, mes.indexOf(":"));
+        State state = State.valueOf(mes.substring(mes.indexOf(":") + 1, mes.length()));
+
+        User user = UserService.find(server.users, name);
+        if (!user.isReady()) WoldService.move(server.game.world, user.getPlayer(), state);
+        user.setReady(true);
+
+        if (UserService.allReady(server.users)) {
+            String data = Parse.build(Rule.MAP, WoldService.string(server.game.world));
+            server.sender.sendAll(data);
+            UserService.offReady(server.users);
+        }
     }
 }

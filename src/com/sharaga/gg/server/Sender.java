@@ -1,21 +1,21 @@
 package com.sharaga.gg.server;
 
-import com.sharaga.gg.utill.Parse;
+import com.sharaga.gg.server.model.User;
 
 import java.io.IOException;
 
 public class Sender {
+
     private Server server;
 
     public Sender(Server server) {
         this.server = server;
     }
 
-    public void send(User user, String message) {
-        byte[] data = message.getBytes();
-
-        user.getPacket().setData(data);
-        user.getPacket().setLength(data.length);
+    public void send(User user, String data) {
+        byte[] bytes = data.getBytes();
+        user.getPacket().setData(bytes);
+        user.getPacket().setLength(bytes.length);
 
         try {
             server.socket.send(user.getPacket());
@@ -24,17 +24,18 @@ public class Sender {
         }
     }
 
-    public void sendOther(String data) {
+    public void sendOther(User sender, String data) {
         for (User user : server.users) {
-            if (!Parse.getName(data).equals(user.getName())) {
+            if (user.getId() != sender.getId()) {
                 send(user, data);
             }
         }
     }
 
-    public void sendAll(String message) {
+    public void sendAll(String data) {
         for (User user : server.users) {
-            send(user, message);
+            send(user, data);
         }
     }
+
 }

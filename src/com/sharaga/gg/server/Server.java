@@ -1,5 +1,6 @@
 package com.sharaga.gg.server;
 
+import com.sharaga.gg.server.model.User;
 import com.sharaga.gg.utill.Parse;
 import com.sharaga.gg.utill.Rule;
 
@@ -11,19 +12,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Server {
+    //TODO make map
     public List<User> users = new ArrayList<>();
-
-    public int port;
+    public Game game;
+    public Eventer eventer;
+    public Sender sender;
     public DatagramSocket socket;
     public boolean isRunning = false;
 
-    public Eventer eventer;
-    public Sender sender;
-
-    public Server(int port) {
+    public Server(Game game, int port) {
         try {
-            this.port = port;
-            this.socket = new DatagramSocket(this.port);
+            this.game = game;
+            this.socket = new DatagramSocket(port);
             this.eventer = new Eventer(this);
             this.sender = new Sender(this);
         } catch (SocketException e ) {
@@ -34,11 +34,11 @@ public class Server {
     public void start() {
         System.out.println("...SERVER = START...");
         isRunning = true;
-
+        game.start();
         receive();
     }
 
-    public void receive() {
+    private void receive() {
         new Thread(() -> {
             while (isRunning) {
                 byte[] data = new byte[1024];
@@ -55,13 +55,16 @@ public class Server {
         }).start();
     }
 
-    public void process(DatagramPacket packet) {
+    private void process(DatagramPacket packet) {
         Rule rule = Parse.getRule(Parse.getStr(packet));
 
         if (rule == Rule.CON) {
-            eventer.eventNewConnection(packet);
+            eventer.newConnection(packet);
+        } else if (rule == Rule.DIS) {
+            eventer.newDisonnection(packet);
         } else if (rule == Rule.STA) {
-            eventer.eventSendMessage(packet);
+            eventer.updateState(packet);
         }
     }
+
 }
