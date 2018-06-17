@@ -2,7 +2,6 @@ package com.sharaga.gg.server;
 
 import com.sharaga.gg.server.model.Player;
 import com.sharaga.gg.server.model.User;
-import com.sharaga.gg.server.model.World;
 import com.sharaga.gg.server.service.PlayerService;
 import com.sharaga.gg.server.service.UserService;
 import com.sharaga.gg.server.service.WoldService;
@@ -38,7 +37,7 @@ public class Eventer {
         }
     }
 
-    public void newDisonnection(DatagramPacket packet) {
+    public void newDisсonnection(DatagramPacket packet) {
         String name = Parse.getMes(packet);
         User user = UserService.find(server.users, name);
         UserService.delete(server.users, user.getId());
@@ -52,13 +51,20 @@ public class Eventer {
         State state = State.valueOf(mes.substring(mes.indexOf(":") + 1, mes.length()));
 
         User user = UserService.find(server.users, name);
-        if (!user.isReady()) WoldService.move(server.game.world, user.getPlayer(), state);
+
+        if (!user.isReady()) {
+            WoldService.move(server.game.world, user.getPlayer(), state);
+            String player = PlayerService.string(user.getPlayer());
+            server.sender.sendAll(Parse.build(Rule.STA, player));
+        }
+
         user.setReady(true);
 
         if (UserService.allReady(server.users)) {
-            String data = Parse.build(Rule.MAP, WoldService.string(server.game.world));
-            server.sender.sendAll(data);
+            String map = Parse.build(Rule.MAP, WoldService.string(server.game.world));
+            server.sender.sendAll(map);
             UserService.offReady(server.users);
         }
     }
+
 }

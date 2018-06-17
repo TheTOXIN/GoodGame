@@ -9,8 +9,8 @@ import java.awt.event.WindowListener;
 
 public class Main {
 	private static final String TITLE = "GOOD GAME";
-	private static final int WINDOW_WIDTH = Settings.W * Settings.W;
-	private static final int WINDOW_HEIGHT = Settings.H * Settings.H + 30;
+	private static final int WINDOW_WIDTH = Settings.W * Settings.SIZE + Settings.SIZE;
+	private static final int WINDOW_HEIGHT = Settings.H * Settings.SIZE + Settings.SIZE;
 
 	private static String address = "localhost";
 	private static int port = 2504;
@@ -64,8 +64,8 @@ public class Main {
 
 	public static void setListener(JFrame frame) {
 		frame.addWindowListener(new WindowAdapter() {
+			@Override
 			public void windowClosing(WindowEvent e) {
-				System.out.println("ХУЙ");
 				ser.logout();
 				System.exit(0);
 			}

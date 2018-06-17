@@ -5,10 +5,12 @@ import com.sharaga.gg.utill.Settings;
 
 import javax.swing.JComponent;
 import java.awt.*;
+import java.util.Random;
 
 public class View extends JComponent {
 
 	private Game game;
+	private final Random rand = new Random();
 
 	public View(Game game) {
 		this.game = game;
@@ -29,11 +31,20 @@ public class View extends JComponent {
 					drawWall(i, j, g2);
 				} else if (cols[j].equals(Index.EMPTY.name())) {
 					String s = "CHECK";
+				} else if (cols[j].equals(Index.FOOD.name())) {
+					drawFood(i, j, g2);
+				} else if (cols[j].equals(Index.BMOB.name())) {
+					drawBomb(i, j, g2);
 				} else {
 					drawPlayer(i, j, game.players.get(cols[j]), g2);
 				}
 			}
 		}
+	}
+
+	private void drawBomb(int y, int x, Graphics2D g2) {
+		g2.setColor(Color.BLACK);
+		g2.fillOval(x * Settings.SIZE, y * Settings.SIZE, Settings.SIZE, Settings.SIZE);
 	}
 
 	private void drawPlayer(int y, int x, Player p, Graphics2D g2) {
@@ -46,6 +57,11 @@ public class View extends JComponent {
 	private void drawWall(int y, int x, Graphics2D g2) {
 		g2.setColor(Color.black);
 		g2.fillRect(x * Settings.SIZE, y * Settings.SIZE, Settings.SIZE, Settings.SIZE);
+	}
+
+	private void drawFood(int y, int x, Graphics2D g2) {
+		g2.setColor(new Color(rand.nextInt(255), rand.nextInt(255), rand.nextInt(255)));
+		g2.fillOval(x * Settings.SIZE, y * Settings.SIZE, Settings.SIZE, Settings.SIZE);
 	}
 
 }

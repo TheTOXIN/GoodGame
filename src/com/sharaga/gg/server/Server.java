@@ -61,7 +61,7 @@ public class Server {
         if (rule == Rule.CON) {
             eventer.newConnection(packet);
         } else if (rule == Rule.DIS) {
-            eventer.newDisonnection(packet);
+            eventer.newDisсonnection(packet);
         } else if (rule == Rule.STA) {
             eventer.updateState(packet);
         }

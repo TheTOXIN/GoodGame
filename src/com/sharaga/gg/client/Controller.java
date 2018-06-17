@@ -14,7 +14,7 @@ public class Controller implements KeyListener, ActionListener {
     private Service ser;
     private View view;
 
-    private boolean isUp, isLeft, isRight, isDown;
+    private boolean isUp, isLeft, isRight, isDown, isSpace;
 
     public Controller(Player player, Service ser, View view) {
         this.ser = ser;
@@ -44,6 +44,10 @@ public class Controller implements KeyListener, ActionListener {
             player.setState(State.DOWN);
         }
 
+        if (isSpace) {
+            player.setState(State.BANG);
+        }
+
         ser.informer();
         view.repaint();
     }
@@ -63,6 +67,9 @@ public class Controller implements KeyListener, ActionListener {
             case 83://s
                 isDown = true;
                 break;
+            case KeyEvent.VK_SPACE:
+                isSpace = true;
+                break;
         }
     }
 
@@ -80,6 +87,9 @@ public class Controller implements KeyListener, ActionListener {
                 break;
             case 83://s
                 isDown = false;
+                break;
+            case KeyEvent.VK_SPACE:
+                isSpace = false;
                 break;
         }
     }
