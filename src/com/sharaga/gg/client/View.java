@@ -33,7 +33,7 @@ public class View extends JComponent {
 					String s = "CHECK";
 				} else if (cols[j].equals(Index.FOOD.name())) {
 					drawFood(i, j, g2);
-				} else if (cols[j].equals(Index.BMOB.name())) {
+				} else if (cols[j].equals(Index.BOMB.name())) {
 					drawBomb(i, j, g2);
 				} else {
 					drawPlayer(i, j, game.players.get(cols[j]), g2);
@@ -43,14 +43,15 @@ public class View extends JComponent {
 	}
 
 	private void drawBomb(int y, int x, Graphics2D g2) {
+		int size = Settings.SIZE / 2;
 		g2.setColor(Color.BLACK);
-		g2.fillOval(x * Settings.SIZE, y * Settings.SIZE, Settings.SIZE, Settings.SIZE);
+		g2.fillOval(x * Settings.SIZE + size / 2, y * Settings.SIZE + size / 2, size, size);
 	}
 
 	private void drawPlayer(int y, int x, Player p, Graphics2D g2) {
 		g2.setColor(p.getColor());
 		g2.fillRect(x * Settings.SIZE, y * Settings.SIZE, Settings.SIZE, Settings.SIZE);
-		g2.setColor(Color.black);
+		if (p.getScore() < 0) g2.setColor(Color.RED); else g2.setColor(Color.BLACK);
 		g2.drawString(p.getName() + ":" + p.getScore(), x * Settings.SIZE - 10, y * Settings.SIZE - 5);
 	}
 

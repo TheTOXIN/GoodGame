@@ -25,7 +25,7 @@ public class Sender {
     }
 
     public void sendOther(User sender, String data) {
-        for (User user : server.users) {
+        for (User user : Server.users) {
             if (user.getId() != sender.getId()) {
                 send(user, data);
             }
@@ -33,7 +33,7 @@ public class Sender {
     }
 
     public void sendAll(String data) {
-        for (User user : server.users) {
+        for (User user : Server.users) {
             send(user, data);
         }
     }

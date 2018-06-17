@@ -23,15 +23,15 @@ public class Eventer {
         String name = Parse.getMes(packet);
         User user = new User(packet);
 
-        if (!UserService.exist(server.users, name)) {
+        if (!UserService.exist(Server.users, name)) {
             Player player = PlayerService.create(name, server.game);
             user.setPlayer(player);
             String world = WoldService.string(server.game.world);
             server.sender.send(user, Parse.build(Rule.TRU, PlayerService.string(player)));
             server.sender.sendOther(user, Parse.build(Rule.CON, PlayerService.string(player)));
-            server.users.forEach(u -> server.sender.send(user, Parse.build(Rule.CON, PlayerService.string(u.getPlayer()))));
+            Server.users.forEach(u -> server.sender.send(user, Parse.build(Rule.CON, PlayerService.string(u.getPlayer()))));
             server.sender.send(user, Parse.build(Rule.MAP, world));
-            server.users.add(user);
+            Server.users.add(user);
         } else {
             server.sender.send(user, Rule.FLS.name());
         }
@@ -39,8 +39,8 @@ public class Eventer {
 
     public void newDisсonnection(DatagramPacket packet) {
         String name = Parse.getMes(packet);
-        User user = UserService.find(server.users, name);
-        UserService.delete(server.users, user.getId());
+        User user = UserService.find(Server.users, name);
+        UserService.delete(Server.users, user.getId());
         WoldService.remove(server.game.world, user.getPlayer());
         server.sender.sendOther(user, Parse.build(Rule.DIS, name));
     }
@@ -50,20 +50,20 @@ public class Eventer {
         String name = mes.substring(0, mes.indexOf(":"));
         State state = State.valueOf(mes.substring(mes.indexOf(":") + 1, mes.length()));
 
-        User user = UserService.find(server.users, name);
+        User user = UserService.find(Server.users, name);
 
         if (!user.isReady()) {
-            WoldService.move(server.game.world, user.getPlayer(), state);
+            server.game.move(user.getPlayer(), state);
             String player = PlayerService.string(user.getPlayer());
             server.sender.sendAll(Parse.build(Rule.STA, player));
         }
 
         user.setReady(true);
 
-        if (UserService.allReady(server.users)) {
+        if (UserService.allReady(Server.users)) {
             String map = Parse.build(Rule.MAP, WoldService.string(server.game.world));
             server.sender.sendAll(map);
-            UserService.offReady(server.users);
+            UserService.offReady(Server.users);
         }
     }
 

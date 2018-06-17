@@ -9,8 +9,8 @@ import java.awt.event.WindowListener;
 
 public class Main {
 	private static final String TITLE = "GOOD GAME";
-	private static final int WINDOW_WIDTH = Settings.W * Settings.SIZE + Settings.SIZE;
-	private static final int WINDOW_HEIGHT = Settings.H * Settings.SIZE + Settings.SIZE;
+	private static final int WINDOW_WIDTH = Settings.W * Settings.SIZE + Settings.SIZE / 2;
+	private static final int WINDOW_HEIGHT = Settings.H * Settings.SIZE + Settings.SIZE + Settings.SIZE / 2;
 
 	private static String address = "localhost";
 	private static int port = 2504;
@@ -29,7 +29,7 @@ public class Main {
 
 		ser.login();
 
-		if (checkConnect()) {//TODO eventer on exit
+		if (checkConnect()) {//TODO make Window
 			JFrame window = new JFrame(TITLE);
 			window.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
 			window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -49,6 +49,7 @@ public class Main {
 	private static void inputDate() {
 		address = JOptionPane.showInputDialog(null, "IP");
 		game.nick = JOptionPane.showInputDialog(null, "NAME");
+		if (game.nick.length() > 10) game.nick = game.nick.substring(0, 10);
 	}
 
 	private static boolean checkConnect() {
@@ -71,4 +72,5 @@ public class Main {
 			}
 		});
 	}
+
 }
