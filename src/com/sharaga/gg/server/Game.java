@@ -12,6 +12,7 @@ import com.sharaga.gg.utill.Settings;
 import com.sharaga.gg.utill.State;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -19,6 +20,7 @@ public class Game {
 
     public World world;
     public List<Bomb> bombs = new ArrayList<>();
+    public Map<String, Player> players = new HashMap<>();
     public boolean isStart;
 
     public Game(World world) {
@@ -28,11 +30,7 @@ public class Game {
 
     public void start() {
         isStart = true;
-        new Thread(() -> {
-            System.out.println("...GAME START...");
-            loop();
-            System.out.println("...GAME END...");
-        }).start();
+        new Thread(this::loop).start();
     }
 
     private void loop() {
@@ -41,14 +39,14 @@ public class Game {
                 int oldX = bomb.getX();
                 int oldY = bomb.getY();
 
-                switch (bomb.getState()) {//TODO abstract
+                switch (bomb.getState()) {
                     case UP: bomb.setY(bomb.getY() - 1); break;
                     case LEFT: bomb.setX(bomb.getX() - 1); break;
                     case RIGHT: bomb.setX(bomb.getX() + 1); break;
                     case DOWN: bomb.setY(bomb.getY() + 1); break;
                 }
 
-                if (BombService.moving(bomb, world)) {
+                if (BombService.moving(bomb, this)) {
                     world.getMatrix()[bomb.getY()][bomb.getX()] = Index.BOMB.name();
                     world.getMatrix()[oldY][oldX] = Index.EMPTY.name();
                 } else {
@@ -97,7 +95,7 @@ public class Game {
         int y = player.getY();
         int x = player.getX();
 
-        switch (player.getState()) {//TODO abstract
+        switch (player.getState()) {
             case UP: y -= 1; break;
             case LEFT: x -= 1; break;
             case RIGHT: x += 1; break;
@@ -108,10 +106,9 @@ public class Game {
         bomb.setX(x);
         bomb.setY(y);
         bomb.setState(player.getState());
-        bomb.setColor(player.getColor());
-        bomb.setPlayer(player);
+        bomb.setPlayer(player.getName());
 
-        if (!BombService.having(bombs, player.getName()) && BombService.moving(bomb, world)) {
+        if (!BombService.having(bombs, player.getName()) && BombService.moving(bomb, this)) {
             bombs.add(bomb);
         }
     }

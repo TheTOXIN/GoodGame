@@ -12,7 +12,6 @@ public class Player {
     private int score;
     private int x;
     private int y;
-    //TODO replace user
 
     public Player() {
     }

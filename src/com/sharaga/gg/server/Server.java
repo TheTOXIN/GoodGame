@@ -8,27 +8,40 @@ import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.SocketException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Server {
-    //TODO make map
-    public static List<User> users = new ArrayList<>();
+
+    private static Server servak;
+
+    public Map<String, User> users = new HashMap<>();
     public Game game;
     public Eventer eventer;
     public Sender sender;
     public DatagramSocket socket;
-    public boolean isRunning = false;
+    public boolean isRunning;
 
-    public Server(Game game, int port) {
+    private Server() { }
+
+    public static Server setInstance(Game game, int port) {
+        Server.servak = new Server();
+
         try {
-            this.game = game;
-            this.socket = new DatagramSocket(port);
-            this.eventer = new Eventer(this);
-            this.sender = new Sender(this);
+            Server.servak.isRunning = false;
+            Server.servak.game = game;
+            Server.servak.socket = new DatagramSocket(port);
+            Server.servak.eventer = new Eventer();
+            Server.servak.sender = new Sender();
         } catch (SocketException e ) {
             System.out.println("Socket - ERROR");
         }
+
+        return Server.servak;
+    }
+
+    public static Server getInstance() {
+        return Server.servak;
     }
 
     public void start() {
@@ -61,7 +74,7 @@ public class Server {
         if (rule == Rule.CON) {
             eventer.newConnection(packet);
         } else if (rule == Rule.DIS) {
-            eventer.newDisсonnection(packet);
+            eventer.newDisconnection(packet);
         } else if (rule == Rule.STA) {
             eventer.updateState(packet);
         }

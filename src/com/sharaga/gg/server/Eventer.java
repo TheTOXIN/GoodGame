@@ -10,39 +10,47 @@ import com.sharaga.gg.utill.Rule;
 import com.sharaga.gg.utill.State;
 
 import java.net.DatagramPacket;
+import java.util.Map;
 
 public class Eventer {
 
-    private Server server;
-
-    public Eventer(Server server) {
-        this.server = server;
-    }
+    private static Server server = Server.getInstance();
 
     public void newConnection(DatagramPacket packet) {
         String name = Parse.getMes(packet);
-        User user = new User(packet);
+        User user = new User(packet, name);
 
-        if (!UserService.exist(Server.users, name)) {
+        if (!server.users.containsKey(name)) {
             Player player = PlayerService.create(name, server.game);
-            user.setPlayer(player);
-            String world = WoldService.string(server.game.world);
-            server.sender.send(user, Parse.build(Rule.TRU, PlayerService.string(player)));
-            server.sender.sendOther(user, Parse.build(Rule.CON, PlayerService.string(player)));
-            Server.users.forEach(u -> server.sender.send(user, Parse.build(Rule.CON, PlayerService.string(u.getPlayer()))));
-            server.sender.send(user, Parse.build(Rule.MAP, world));
-            Server.users.add(user);
+            String worldStr = WoldService.string(server.game.world);
+            String playerStr = PlayerService.string(player);
+
+            server.game.players.put(name, player);
+            server.users.put(name, user);
+
+            server.sender.send(user, Parse.build(Rule.TRU, playerStr));
+            server.sender.send(user, Parse.build(Rule.MAP, worldStr));
+            server.sender.sendOther(user, Parse.build(Rule.CON, playerStr));
+            server.sender.sendAnother(user);
+
+            UserService.message(user, "CON");
         } else {
             server.sender.send(user, Rule.FLS.name());
         }
     }
 
-    public void newDisсonnection(DatagramPacket packet) {
+    public void newDisconnection(DatagramPacket packet) {
         String name = Parse.getMes(packet);
-        User user = UserService.find(Server.users, name);
-        UserService.delete(Server.users, user.getId());
-        WoldService.remove(server.game.world, user.getPlayer());
+
+        User user = server.users.get(name);
+        Player player = server.game.players.get(name);
+
+        WoldService.remove(server.game, player);
+        server.users.remove(name);
+        server.game.players.remove(name);
+
         server.sender.sendOther(user, Parse.build(Rule.DIS, name));
+        UserService.message(user, "DIS");
     }
 
     public void updateState(DatagramPacket packet) {
@@ -50,20 +58,21 @@ public class Eventer {
         String name = mes.substring(0, mes.indexOf(":"));
         State state = State.valueOf(mes.substring(mes.indexOf(":") + 1, mes.length()));
 
-        User user = UserService.find(Server.users, name);
+        User user = server.users.get(name);
+        Player player = server.game.players.get(name);
 
         if (!user.isReady()) {
-            server.game.move(user.getPlayer(), state);
-            String player = PlayerService.string(user.getPlayer());
-            server.sender.sendAll(Parse.build(Rule.STA, player));
+            server.game.move(player, state);
+            String playerStr = PlayerService.string(player);
+            server.sender.sendAll(Parse.build(Rule.STA, playerStr));
         }
 
         user.setReady(true);
 
-        if (UserService.allReady(Server.users)) {
+        if (UserService.allReady(server.users)) {
             String map = Parse.build(Rule.MAP, WoldService.string(server.game.world));
             server.sender.sendAll(map);
-            UserService.offReady(Server.users);
+            UserService.offReady(server.users);
         }
     }
 

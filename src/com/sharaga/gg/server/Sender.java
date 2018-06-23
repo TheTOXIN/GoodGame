@@ -1,16 +1,16 @@
 package com.sharaga.gg.server;
 
 import com.sharaga.gg.server.model.User;
+import com.sharaga.gg.server.service.PlayerService;
+import com.sharaga.gg.utill.Parse;
+import com.sharaga.gg.utill.Rule;
 
 import java.io.IOException;
+import java.util.Map;
 
 public class Sender {
 
-    private Server server;
-
-    public Sender(Server server) {
-        this.server = server;
-    }
+    private Server server = Server.getInstance();
 
     public void send(User user, String data) {
         byte[] bytes = data.getBytes();
@@ -25,17 +25,25 @@ public class Sender {
     }
 
     public void sendOther(User sender, String data) {
-        for (User user : Server.users) {
-            if (user.getId() != sender.getId()) {
-                send(user, data);
-            }
-        }
+        server.users.entrySet()
+                .stream()
+                .map(Map.Entry::getValue)
+                .filter(user -> !user.getPlayer().equals(sender.getPlayer()))
+                .forEach(user -> send(user, data));
+    }
+
+    public void sendAnother(User user) {
+        server.game.players.entrySet()
+                .stream()
+                .map(Map.Entry::getValue)
+                .forEach(p -> send(user, Parse.build(Rule.CON, PlayerService.string(p))));
     }
 
     public void sendAll(String data) {
-        for (User user : Server.users) {
-            send(user, data);
-        }
+        server.users.entrySet()
+                .stream()
+                .map(Map.Entry::getValue)
+                .forEach(user -> send(user, data));
     }
 
 }

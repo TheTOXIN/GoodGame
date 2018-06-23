@@ -3,8 +3,6 @@ package com.sharaga.gg.server;
 import com.sharaga.gg.server.model.World;
 import com.sharaga.gg.server.service.WoldService;
 
-import java.util.Collections;
-
 public class Run {
     public static void main(String[] args) {
         System.out.println("-=RUN=-");
@@ -12,7 +10,7 @@ public class Run {
         World world = WoldService.generate("HELLO WORLD");
         Game game = new Game(world);
 
-        Server server = new Server(game, 2504);
+        Server server = Server.setInstance(game, 2504);
         server.start();
     }
 }

@@ -1,10 +1,10 @@
 package com.sharaga.gg.server.service;
 
+import com.sharaga.gg.server.Game;
 import com.sharaga.gg.server.model.World;
 import com.sharaga.gg.server.model.Player;
 import com.sharaga.gg.utill.Index;
 import com.sharaga.gg.utill.Settings;
-import com.sharaga.gg.utill.State;
 
 import java.util.Random;
 
@@ -75,15 +75,14 @@ public class WoldService {
         world.getMatrix()[y][x] = Index.FOOD.name();
     }
 
-    public static void remove(World world, Player player) {
-        world.getMatrix()[player.getY()][player.getX()] = Index.EMPTY.name();
+    public static void remove(Game game, Player player) {
+        game.world.getMatrix()[player.getY()][player.getX()] = Index.EMPTY.name();
     }
 
     public static boolean checking(int x, int y) {
         return !(x >= Settings.W || x < 0 || y >= Settings.H || y < 0);
     }
 
-    //TODO omg
     public static boolean collision(World world, int x, int y, Index index) {
         return world.getMatrix()[y][x].equals(index.name());
     }
