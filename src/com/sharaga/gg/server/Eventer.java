@@ -23,6 +23,8 @@ public class Eventer {
         String name = Parse.getMes(packet);
         User user = new User(packet);
 
+        System.out.println(name + " - TRY CONNECT : " + packet.getAddress());
+
         if (!UserService.exist(Server.users, name)) {
             Player player = PlayerService.create(name, server.game);
             user.setPlayer(player);
@@ -32,8 +34,12 @@ public class Eventer {
             Server.users.forEach(u -> server.sender.send(user, Parse.build(Rule.CON, PlayerService.string(u.getPlayer()))));
             server.sender.send(user, Parse.build(Rule.MAP, world));
             Server.users.add(user);
+
+            System.out.println(name + " - CONNECT : TRUE ");
         } else {
             server.sender.send(user, Rule.FLS.name());
+
+            System.out.println(name + " - CONNECT : FALSE ");
         }
     }
 
