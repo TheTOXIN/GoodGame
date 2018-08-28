@@ -65,7 +65,7 @@ public class Controller implements KeyListener, ActionListener {
             case KeyEvent.VK_A :    isLeft     = press; break;
             case KeyEvent.VK_S :    isDown     = press; break;
             case KeyEvent.VK_D :    isRight    = press; break;
-            case KeyEvent.VK_SPACE: isSpace    = false; break;
+            case KeyEvent.VK_SPACE: isSpace    = press; break;
         }
     }
 
