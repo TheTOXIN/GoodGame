@@ -83,7 +83,6 @@ public class WoldService {
         return !(x >= Settings.W || x < 0 || y >= Settings.H || y < 0);
     }
 
-    //TODO omg
     public static boolean collision(World world, int x, int y, Index index) {
         return world.getMatrix()[y][x].equals(index.name());
     }

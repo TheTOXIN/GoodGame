@@ -116,7 +116,7 @@ public class Game {
         }
     }
 
-    public void sleep() {
+    private void sleep() {
         try {
             Thread.sleep(Settings.SPEED);
         } catch (InterruptedException e) {

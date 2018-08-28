@@ -4,13 +4,9 @@ import com.sharaga.gg.utill.State;
 
 import java.awt.*;
 
-public class Bomb {
+public class Bomb extends Objector {
 
     public Player player;
-    public Color color;
-    public State state;
-    private int x;
-    private int y;
 
     public Bomb() {
 
@@ -18,10 +14,6 @@ public class Bomb {
 
     public Bomb(Player player, Color color, State state, int x, int y) {
         this.player = player;
-        this.color = color;
-        this.state = state;
-        this.x = x;
-        this.y = y;
     }
 
     public Player getPlayer() {
@@ -32,38 +24,6 @@ public class Bomb {
         this.player = player;
     }
 
-    public Color getColor() {
-        return color;
-    }
-
-    public void setColor(Color color) {
-        this.color = color;
-    }
-
-    public State getState() {
-        return state;
-    }
-
-    public void setState(State state) {
-        this.state = state;
-    }
-
-    public int getX() {
-        return x;
-    }
-
-    public void setX(int x) {
-        this.x = x;
-    }
-
-    public int getY() {
-        return y;
-    }
-
-    public void setY(int y) {
-        this.y = y;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -71,32 +31,19 @@ public class Bomb {
 
         Bomb bomb = (Bomb) o;
 
-        if (x != bomb.x) return false;
-        if (y != bomb.y) return false;
-        if (player != null ? !player.equals(bomb.player) : bomb.player != null) return false;
-        if (color != null ? !color.equals(bomb.color) : bomb.color != null) return false;
-        return state == bomb.state;
+        return player != null ? player.equals(bomb.player) : bomb.player == null;
     }
 
     @Override
     public int hashCode() {
-        int result = player != null ? player.hashCode() : 0;
-        result = 31 * result + (color != null ? color.hashCode() : 0);
-        result = 31 * result + (state != null ? state.hashCode() : 0);
-        result = 31 * result + x;
-        result = 31 * result + y;
-        return result;
+        return player != null ? player.hashCode() : 0;
     }
 
     @Override
     public String toString() {
         return "Bomb{" +
-                "player=" + player +
-                ", color=" + color +
-                ", state=" + state +
-                ", x=" + x +
-                ", y=" + y +
-                '}';
+            "player=" + player +
+            '}';
     }
 
 }
