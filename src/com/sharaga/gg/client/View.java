@@ -30,13 +30,13 @@ public class View extends JComponent {
 				if (cols[j].equals(Index.WALL.name())) {
 					drawWall(i, j, g2);
 				} else if (cols[j].equals(Index.EMPTY.name())) {
-					String s = "CHECK";
+					//AHAHHA DONT TOUCH IT (i'm serious...)
 				} else if (cols[j].equals(Index.FOOD.name())) {
 					drawFood(i, j, g2);
 				} else if (cols[j].equals(Index.BOMB.name())) {
 					drawBomb(i, j, g2);
 				} else {
-					drawPlayer(i, j, game.players.get(cols[j]), g2);
+					drawPlayer(i, j, game.players.get(cols[j]), g2);//TODO NPE
 				}
 			}
 		}

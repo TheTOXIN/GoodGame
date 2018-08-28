@@ -10,24 +10,30 @@ public class Player {
 	private String name;
 	private Color color;
 	private State state;
+	private State prevState;
+
 	private int score;
-	private int step;
 	
 	public Player() {
-		this.step = 1;
+		this.prevState = State.NONE;
+		this.state = State.NONE;
 	}
 
-	public void setName(String name){this.name = name;}
-	public String getName(){return name;}
+	public String getName() {
+		return name;
+	}
 
-	public void setColor(Color color){this.color = color;}
-	public Color getColor(){return color;}
-	
-	public void setScore(int score){this.score = score;}
-	public int getScore(){return score;}
-	
-	public int getStep() {return step;}
-	public void setStep(int step) {this.step = step;}
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public Color getColor() {
+		return color;
+	}
+
+	public void setColor(Color color) {
+		this.color = color;
+	}
 
 	public State getState() {
 		return state;
@@ -35,6 +41,22 @@ public class Player {
 
 	public void setState(State state) {
 		this.state = state;
+	}
+
+	public State getPrevState() {
+		return prevState;
+	}
+
+	public void setPrevState(State nextState) {
+		this.prevState = nextState;
+	}
+
+	public int getScore() {
+		return score;
+	}
+
+	public void setScore(int score) {
+		this.score = score;
 	}
 
 	@Override
@@ -45,10 +67,10 @@ public class Player {
 		Player player = (Player) o;
 
 		if (score != player.score) return false;
-		if (step != player.step) return false;
 		if (name != null ? !name.equals(player.name) : player.name != null) return false;
 		if (color != null ? !color.equals(player.color) : player.color != null) return false;
-		return state == player.state;
+		if (state != player.state) return false;
+		return prevState == player.prevState;
 	}
 
 	@Override
@@ -56,20 +78,21 @@ public class Player {
 		int result = name != null ? name.hashCode() : 0;
 		result = 31 * result + (color != null ? color.hashCode() : 0);
 		result = 31 * result + (state != null ? state.hashCode() : 0);
+		result = 31 * result + (prevState != null ? prevState.hashCode() : 0);
 		result = 31 * result + score;
-		result = 31 * result + step;
 		return result;
 	}
 
 	@Override
 	public String toString() {
 		return "Player{" +
-				"name='" + name + '\'' +
-				", color=" + color +
-				", state=" + state +
-				", score=" + score +
-				", step=" + step +
-				'}';
+			"name='" + name + '\'' +
+			", color=" + color +
+			", state=" + state +
+			", prevState=" + prevState +
+			", score=" + score +
+			'}';
 	}
 
 }
+

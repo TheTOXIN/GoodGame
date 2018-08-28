@@ -1,8 +1,7 @@
 package com.sharaga.gg.client;
 
-import com.sharaga.gg.utill.State;
-
 import java.awt.*;
+
 
 public class Mapper {
 
@@ -11,7 +10,6 @@ public class Mapper {
 
         res.setName(toFind("name", string));
         res.setColor(Color.decode(toFind("color", string)));
-        res.setState(State.valueOf(toFind("state", string)));
         res.setScore(Integer.parseInt(toFind("score", string)));
 
         return res;

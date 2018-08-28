@@ -47,8 +47,11 @@ public class Eventer {
 
     public void updateState(DatagramPacket packet) {
         String mes = Parse.getMes(packet);
-        String name = mes.substring(0, mes.indexOf(":"));
-        State state = State.valueOf(mes.substring(mes.indexOf(":") + 1, mes.length()));
+
+        String[] parse = Parse.parseDelimer(mes);
+
+        String name = parse[0];
+        State state = State.valueOf(parse[1]);
 
         User user = UserService.find(Server.users, name);
 

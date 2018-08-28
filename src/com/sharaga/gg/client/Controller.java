@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.Timer;
 
 public class Controller implements KeyListener, ActionListener {
+
     private Player player;
     private Timer timer;
     private Service ser;
@@ -29,24 +30,14 @@ public class Controller implements KeyListener, ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        player.setPrevState(player.getState());
         player.setState(State.NONE);
 
-        if (isUp) {
-            player.setState(State.UP);
-        }
-        if (isLeft) {
-            player.setState(State.LEFT);
-        }
-        if (isRight) {
-            player.setState(State.RIGHT);
-        }
-        if (isDown) {
-            player.setState(State.DOWN);
-        }
-
-        if (isSpace) {
-            player.setState(State.BANG);
-        }
+        if (isUp) player.setState(State.UP);
+        if (isLeft) player.setState(State.LEFT);
+        if (isRight) player.setState(State.RIGHT);
+        if (isDown) player.setState(State.DOWN);
+        if (isSpace) player.setState(State.BANG);
 
         ser.informer();
         view.repaint();
@@ -54,47 +45,28 @@ public class Controller implements KeyListener, ActionListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
-        switch (e.getKeyCode()) {
-            case 87://w
-                isUp = true;
-                break;
-            case 65://a
-                isLeft = true;
-                break;
-            case 68://d
-                isRight = true;
-                break;
-            case 83://s
-                isDown = true;
-                break;
-            case KeyEvent.VK_SPACE:
-                isSpace = true;
-                break;
-        }
+        processKey(e.getKeyCode(), true);
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
-        switch (e.getKeyCode()) {
-            case 87://w
-                isUp = false;
-                break;
-            case 65://a
-                isLeft = false;
-                break;
-            case 68://d
-                isRight = false;
-                break;
-            case 83://s
-                isDown = false;
-                break;
-            case KeyEvent.VK_SPACE:
-                isSpace = false;
-                break;
-        }
+        processKey(e.getKeyCode(), false);
     }
 
     @Override
     public void keyTyped(KeyEvent e) {
+        //nothing...
     }
+
+    private void processKey(int code, boolean press) {
+        switch (code)//c++ style :D
+        {
+            case KeyEvent.VK_W :    isUp       = press; break;
+            case KeyEvent.VK_A :    isLeft     = press; break;
+            case KeyEvent.VK_S :    isDown     = press; break;
+            case KeyEvent.VK_D :    isRight    = press; break;
+            case KeyEvent.VK_SPACE: isSpace    = false; break;
+        }
+    }
+
 }

@@ -57,7 +57,7 @@ public class Service {
 
     public void informer() {
         if (!game.isSleep) {
-            String message = game.getPlayer().getName() + ":" + game.getPlayer().getState();//TODO Hmm
+            String message = Parse.buildDelimer(game.getPlayer().getName(), game.getPlayer().getState().toString());
             con.send(Parse.build(Rule.STA, message));
             sleep();
         }

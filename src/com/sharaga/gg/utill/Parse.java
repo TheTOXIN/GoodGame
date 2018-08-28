@@ -1,11 +1,15 @@
 package com.sharaga.gg.utill;
 
 import java.net.DatagramPacket;
+import java.util.Arrays;
 
 /**
  * Статический класс для парсинга пакетов
  */
 public class Parse {
+
+    private static final String DELIMER = ":";
+
     //Парсинг строчки в правило из пакета
     public static Rule getRule(String data) {
         data = data.substring(0, 3);
@@ -36,4 +40,15 @@ public class Parse {
     public static String build(Rule rule, String mes) {
         return rule.name() + mes + Rule.END;
     }
+
+    public static String buildDelimer(String... strings) {
+        StringBuilder res = new StringBuilder();
+        Arrays.stream(strings).forEach(s -> res.append(s).append(DELIMER));
+        return res.toString();
+    }
+
+    public static String[] parseDelimer(String string) {
+        return string.split(DELIMER);
+    }
+
 }
