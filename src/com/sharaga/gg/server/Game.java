@@ -41,7 +41,7 @@ public class Game {
                 int oldX = bomb.getX();
                 int oldY = bomb.getY();
 
-                switch (bomb.getState()) {//TODO abstract
+                switch (bomb.getState()) {
                     case UP: bomb.setY(bomb.getY() - 1); break;
                     case LEFT: bomb.setX(bomb.getX() - 1); break;
                     case RIGHT: bomb.setX(bomb.getX() + 1); break;
@@ -97,7 +97,7 @@ public class Game {
         int y = player.getY();
         int x = player.getX();
 
-        switch (player.getState()) {//TODO abstract
+        switch (player.getState()) {
             case UP: y -= 1; break;
             case LEFT: x -= 1; break;
             case RIGHT: x += 1; break;

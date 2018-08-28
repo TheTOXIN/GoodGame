@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Server {
-    //TODO make map
+
     public static List<User> users = new ArrayList<>();
     public Game game;
     public Eventer eventer;

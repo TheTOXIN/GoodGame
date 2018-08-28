@@ -6,8 +6,6 @@ public class Player extends Objector {
     private String name;
     private int score;
 
-    //TODO replace user
-
     public Player() {
     }
 
