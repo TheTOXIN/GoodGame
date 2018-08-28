@@ -50,6 +50,7 @@ public class Main {
 		address = JOptionPane.showInputDialog(null, "IP");
 		game.nick = JOptionPane.showInputDialog(null, "NAME");
 		if (game.nick.length() > 10) game.nick = game.nick.substring(0, 10);
+		if (!address.isEmpty()) address = "localhost";
 	}
 
 	private static boolean checkConnect() {
