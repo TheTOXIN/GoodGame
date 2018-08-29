@@ -49,6 +49,8 @@ public class Eventer {
         UserService.delete(Server.users, user.getId());
         WoldService.remove(server.game.world, user.getPlayer());
         server.sender.sendOther(user, Parse.build(Rule.DIS, name));
+
+        System.out.println(name + " - DISCONNECT : " + packet.getAddress());
     }
 
     public void updateState(DatagramPacket packet) {

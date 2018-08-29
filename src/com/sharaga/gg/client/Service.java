@@ -48,7 +48,6 @@ public class Service {
                 } else if (Rule.STA == rule) {
                     Player newP = Mapper.toPlayer(message);
                     Player oldP = game.players.get(newP.getName());
-                    oldP.setState(newP.getState());
                     oldP.setScore(newP.getScore());
                 }
             }

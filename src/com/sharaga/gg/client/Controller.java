@@ -1,5 +1,6 @@
 package com.sharaga.gg.client;
 
+import com.sharaga.gg.utill.Settings;
 import com.sharaga.gg.utill.State;
 
 import java.awt.event.KeyListener;
@@ -21,7 +22,7 @@ public class Controller implements KeyListener, ActionListener {
         this.ser = ser;
         this.view = view;
         this.player = player;
-        this.timer = new Timer(1000 / 60, this);
+        this.timer = new Timer(Settings.FPS, this);
     }
 
     public void start() {
@@ -38,6 +39,8 @@ public class Controller implements KeyListener, ActionListener {
         if (isRight) player.setState(State.RIGHT);
         if (isDown) player.setState(State.DOWN);
         if (isSpace) player.setState(State.BANG);
+
+        //System.out.println(player);
 
         ser.informer();
         view.repaint();
