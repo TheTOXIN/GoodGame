@@ -3,11 +3,11 @@ package com.sharaga.gg.client;
 import com.sharaga.gg.utill.Index;
 import com.sharaga.gg.utill.Settings;
 
-import javax.swing.JComponent;
+import javax.swing.*;
 import java.awt.*;
 import java.util.Random;
 
-public class View extends JComponent {
+public class View extends JPanel {
 
 	private Game game;
 	private final Random rand = new Random();
@@ -17,8 +17,15 @@ public class View extends JComponent {
 	}
 
 	@Override
-	public void paintComponent(Graphics g) {
+	public void paint(Graphics g) {
+		super.paintComponent(g);
+
 		Graphics2D g2 = (Graphics2D) g;
+
+		RenderingHints rh = new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		rh.put(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+		g2.setRenderingHints(rh);
+
 		drawBack(g2);
 		drawWorld(game.world, g2);
 	}

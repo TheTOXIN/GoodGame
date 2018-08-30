@@ -22,11 +22,14 @@ public class Controller implements KeyListener, ActionListener {
         this.ser = ser;
         this.view = view;
         this.player = player;
-        this.timer = new Timer(Settings.FPS, this);
+
+        timerStart();
     }
 
-    public void start() {
-        timer.start();
+    private void timerStart() {
+        this.timer = new Timer(1, this);
+        this.timer.setInitialDelay(Settings.SPEED);
+        this.timer.start();
     }
 
     @Override

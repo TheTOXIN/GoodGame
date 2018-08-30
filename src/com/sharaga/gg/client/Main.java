@@ -28,13 +28,10 @@ public class Main {
 
 		if (checkConnect()) {
 			window = new Window();
-
 			view = new View(game);
 			control = new Controller(game.getPlayer(), ser, view);
-			control.start();
 
 			window.init(view, control);
-
 			setListener(window);
 		}
 	}
