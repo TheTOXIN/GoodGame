@@ -26,7 +26,7 @@ public class Server {
             this.socket = new DatagramSocket(port);
             this.eventer = new Eventer(this);
             this.sender = new Sender(this);
-        } catch (SocketException e ) {
+        } catch (SocketException e) {
             System.out.println("Socket - ERROR");
         }
     }
@@ -66,5 +66,4 @@ public class Server {
             eventer.updateState(packet);
         }
     }
-
 }

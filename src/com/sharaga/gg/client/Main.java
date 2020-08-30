@@ -13,6 +13,7 @@ public class Main {
 
 	private static View view;
 	private static Service ser;
+
 	private static Connector con;
 	private static Controller control;
 	private static Window window;
@@ -67,5 +68,4 @@ public class Main {
 			}
 		});
 	}
-
 }

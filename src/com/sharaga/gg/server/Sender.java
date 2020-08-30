@@ -37,5 +37,4 @@ public class Sender {
             send(user, data);
         }
     }
-
 }

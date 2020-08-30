@@ -7,6 +7,7 @@ import java.awt.event.KeyListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.time.LocalDateTime;
 import javax.swing.Timer;
 
 public class Controller implements KeyListener, ActionListener {
@@ -34,8 +35,6 @@ public class Controller implements KeyListener, ActionListener {
         if (isDown) player.setState(State.DOWN);
         if (isSpace) player.setState(State.BANG);
 
-        //System.out.println(player);
-
         ser.informer();
         view.repaint();
     }
@@ -56,7 +55,7 @@ public class Controller implements KeyListener, ActionListener {
     }
 
     private void processKey(int code, boolean press) {
-        switch (code)//c++ style :D
+        switch (code) //c++ style :D
         {
             case KeyEvent.VK_W :    isUp       = press; break;
             case KeyEvent.VK_A :    isLeft     = press; break;
@@ -65,5 +64,4 @@ public class Controller implements KeyListener, ActionListener {
             case KeyEvent.VK_SPACE: isSpace    = press; break;
         }
     }
-
 }
