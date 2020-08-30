@@ -25,5 +25,4 @@ public class UserService {
     public static void delete(List<User> users, int id) {
         users.stream().filter(user -> user.getId() == id).findFirst().ifPresent(users::remove);
     }
-
 }

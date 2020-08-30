@@ -12,16 +12,14 @@ import javax.swing.Timer;
 
 public class Controller implements KeyListener, ActionListener {
 
-    private Player player;
     private Service ser;
     private View view;
 
     private boolean isUp, isLeft, isRight, isDown, isSpace;
 
-    public Controller(Player player, Service ser, View view) {
+    public Controller(Service ser, View view) {
         this.ser = ser;
         this.view = view;
-        this.player = player;
     }
 
     @Override

@@ -11,12 +11,12 @@ public class Main {
 
 	private static String address = "localhost";
 
-	private static View view;
 	private static Service ser;
-
 	private static Connector con;
+
 	private static Controller control;
 	private static Window window;
+	private static View view;
 
 	private static Room room = new Room();
 
@@ -29,10 +29,10 @@ public class Main {
 		ser.login();
 
 		if (checkConnect()) {
-			window = new Window();
 			view = new View(room);
+			window = new Window();
 
-			control = new Controller(room.getPlayer(), ser, view);
+			control = new Controller(ser, view);
 
 			window.init(view, control);
 			setListener(window);

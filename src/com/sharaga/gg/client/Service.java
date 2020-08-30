@@ -20,9 +20,14 @@ public class Service {
     public void login() {
         con.send(Parse.build(Rule.CON, room.nick));
         String data = con.receive();
+
         Rule answer = Parse.getRule(data);
         con.isConnected = answer == Rule.TRU;
-        if (answer == Rule.TRU) room.players.put(room.nick, Mapper.toPlayer(Parse.getMes(data)));
+
+        if (answer == Rule.TRU) {
+            Player player = Mapper.toPlayer(Parse.getMes(data));
+            room.players.put(room.nick, player);
+        }
     }
 
     public void logout() {
@@ -39,6 +44,7 @@ public class Service {
             while (con.isConnected) {
                 String data = con.receive();
                 String message = Parse.getMes(data);
+
                 Rule rule = Parse.getRule(data);
 
                 if (Rule.CON == rule) {
@@ -50,8 +56,7 @@ public class Service {
                     room.world = message;
                 } else if (Rule.STA == rule) {
                     Player newP = Mapper.toPlayer(message);
-                    Player oldP = room.players.get(newP.getName());
-                    oldP.setScore(newP.getScore());
+                    room.players.put(newP.getName(), newP);
                 }
             }
         }).start();

@@ -65,6 +65,8 @@ public class View extends JPanel {
 	}
 
 	private void drawPlayer(int y, int x, Player p, Graphics2D g2) {
+		if (p == null) return;
+
 		g2.setColor(p.getColor());
 		g2.fillRect(x * SIZE, y * SIZE, SIZE, SIZE);
 
