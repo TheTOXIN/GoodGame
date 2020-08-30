@@ -29,10 +29,7 @@ public class PlayerService {
 
         res += "name:" + player.getName() + "\n";
         res += "color:" + player.getColor().getRGB() + "\n";
-        res += "state:" + player.getState().name() + "\n";
         res += "score:" + player.getScore() + "\n";
-        res += "x:" + player.getX() + "\n";
-        res += "y:" + player.getY() + "\n";
 
         return res;
     }

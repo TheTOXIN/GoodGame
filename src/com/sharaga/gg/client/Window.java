@@ -30,7 +30,7 @@ public class Window extends JFrame {
     }
 
     private void timer(Controller control) {
-        Timer timer = new Timer(PING, control);
+        Timer timer = new Timer(SPEED, control);
 
         timer.setInitialDelay(0);
         timer.start();

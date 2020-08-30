@@ -146,7 +146,7 @@ public class Game {
 
     public void sleep() {
         try {
-            Thread.sleep(1);
+            Thread.sleep(Const.PING);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
