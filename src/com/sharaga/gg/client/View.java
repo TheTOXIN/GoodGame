@@ -59,40 +59,17 @@ public class View extends JPanel {
 
 	private void drawBomb(int y, int x, Graphics2D g2) {
 		int size = SIZE / 2;
+
 		g2.setColor(Color.BLACK);
 		g2.fillOval(x * SIZE + size / 2, y * SIZE + size / 2, size, size);
 	}
 
 	private void drawPlayer(int y, int x, Player p, Graphics2D g2) {
 		g2.setColor(p.getColor());
+		g2.fillRect(x * SIZE, y * SIZE, SIZE, SIZE);
 
-		switch (p.getState())
-		{
-			case UP: drawPlayerMove(0, 1, x, y, p, g2); break;
-			case LEFT: drawPlayerMove(1, 0, x, y, p, g2); break;
-			case DOWN: drawPlayerMove(0, -1, x, y, p, g2); break;
-			case RIGHT: drawPlayerMove(-1, 0, x, y, p, g2); break;
-			case BANG: case NONE: g2.fillRect(x * SIZE, y * SIZE, SIZE, SIZE); break;
-		}
-
-		if (p.getScore() < 0) g2.setColor(Color.RED); else g2.setColor(Color.BLACK);
+		if (p.getScore() < 0) g2.setColor(Color.RED);else g2.setColor(Color.BLACK);
 		g2.drawString(p.getName() + ":" + p.getScore(), x * SIZE - 10, y * SIZE - 5);
-	}
-
-	private void drawPlayerMove(int dx, int dy, int x, int y, Player p, Graphics2D g2) {
-		int oldY = (y + dy) * SIZE;
-		int newY = y * SIZE;
-
-		int oldX = (x + dx) * SIZE;
-		int newX = x * SIZE;
-
-		while (oldY != newY || oldX != newX) {
-			oldY -= dy;
-			oldX -= dx;
-
-			g2.setColor(p.getColor());
-			g2.fillRect(oldX, oldY, SIZE, SIZE);
-		}
 	}
 
 	private void drawWall(int y, int x, Graphics2D g2) {
