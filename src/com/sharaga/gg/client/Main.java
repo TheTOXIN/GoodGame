@@ -11,8 +11,8 @@ public class Main {
 
 	private static String address = "localhost";
 
-	private static Service ser;
 	private static Connector con;
+	private static Service ser;
 
 	private static Controller control;
 	private static Window window;
@@ -20,7 +20,7 @@ public class Main {
 
 	private static Room room = new Room();
 
-	public static void main(String args[]) {
+	public static void main(String args[]) throws Exception {
 		inputDate();
 
 		con = new Connector(Const.PORT, address);
@@ -29,9 +29,10 @@ public class Main {
 		ser.login();
 
 		if (checkConnect()) {
+			ser.start();
+
 			view = new View(room);
 			window = new Window();
-
 			control = new Controller(ser, view);
 
 			window.init(view, control);
@@ -51,7 +52,6 @@ public class Main {
 	private static boolean checkConnect() {
 		if (con.isConnected) {
 			JOptionPane.showMessageDialog(null, "YOU CONNECT TO SERVER!!!");
-			ser.start();
 			return true;
 		} else {
 			JOptionPane.showMessageDialog(null, "YOU CONNECT TO PROBLEM...");

@@ -5,7 +5,12 @@ import com.sharaga.gg.utill.Rule;
 import com.sharaga.gg.utill.Const;
 import com.sharaga.gg.utill.State;
 
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
+
 import static com.sharaga.gg.utill.Parse.buildDelimer;
+import static java.util.concurrent.CompletableFuture.supplyAsync;
 
 public class Service {
 
@@ -17,16 +22,22 @@ public class Service {
         this.room = room;
     }
 
-    public void login() {
+    public void login() throws Exception {
         con.send(Parse.build(Rule.CON, room.nick));
-        String data = con.receive();
 
+        CompletableFuture<String> future = supplyAsync(() -> con.receive());
+        sleep(1000);
+
+        if (!future.isDone()) return;
+
+        String data = future.get();
         Rule answer = Parse.getRule(data);
-        con.isConnected = answer == Rule.TRU;
 
         if (answer == Rule.TRU) {
             Player player = Mapper.toPlayer(Parse.getMes(data));
+
             room.players.put(room.nick, player);
+            con.isConnected = true;
         }
     }
 
@@ -68,15 +79,16 @@ public class Service {
             String message = buildDelimer(nick, state.toString());
 
             con.send(Parse.build(Rule.STA, message));
-            sleep();
+
+            room.isSleep = true;
+            sleep(Const.PING);
+            room.isSleep = false;
         }
     }
 
-    public void sleep() {
+    public void sleep(int time) {
         try {
-            room.isSleep = true;
-            Thread.sleep(Const.PING);
-            room.isSleep = false;
+            Thread.sleep(time);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
