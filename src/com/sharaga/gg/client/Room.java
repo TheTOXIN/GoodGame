@@ -3,7 +3,7 @@ package com.sharaga.gg.client;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Game {
+public class Room {
 
     public String nick;
     public String world;
@@ -13,5 +13,4 @@ public class Game {
     public Player getPlayer() {
         return players.get(nick);
     }
-
 }

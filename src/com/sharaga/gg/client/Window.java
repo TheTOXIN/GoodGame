@@ -1,14 +1,18 @@
 package com.sharaga.gg.client;
 
-import com.sharaga.gg.utill.Settings;
+import com.sharaga.gg.utill.Const;
 
 import javax.swing.*;
+
+import static com.sharaga.gg.utill.Const.*;
 
 public class Window extends JFrame {
 
     private static final String TITLE = "GOOD GAME";
-    private static final int WINDOW_WIDTH = Settings.W * Settings.SIZE + Settings.SIZE / 2;
-    private static final int WINDOW_HEIGHT = Settings.H * Settings.SIZE + Settings.SIZE + Settings.SIZE / 2;
+    private static final int FUCK = 45;
+
+    private static final int WINDOW_WIDTH = W * SIZE + SIZE / 2;
+    private static final int WINDOW_HEIGHT = H * SIZE + (SIZE + FUCK) / 2;
 
     public Window() {
         super(TITLE);
@@ -21,5 +25,14 @@ public class Window extends JFrame {
         super.add(view);
         super.addKeyListener(control);
         super.setVisible(true);
+
+        this.timer(control);
+    }
+
+    private void timer(Controller control) {
+        Timer timer = new Timer(PING, control);
+
+        timer.setInitialDelay(0);
+        timer.start();
     }
 }

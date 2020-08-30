@@ -1,6 +1,6 @@
 package com.sharaga.gg.client;
 
-import com.sharaga.gg.utill.Settings;
+import com.sharaga.gg.utill.Const;
 import com.sharaga.gg.utill.State;
 
 import java.awt.event.KeyListener;
@@ -12,7 +12,6 @@ import javax.swing.Timer;
 public class Controller implements KeyListener, ActionListener {
 
     private Player player;
-    private Timer timer;
     private Service ser;
     private View view;
 
@@ -22,14 +21,6 @@ public class Controller implements KeyListener, ActionListener {
         this.ser = ser;
         this.view = view;
         this.player = player;
-
-        timerStart();
-    }
-
-    private void timerStart() {
-        this.timer = new Timer(1, this);
-        this.timer.setInitialDelay(Settings.SPEED);
-        this.timer.start();
     }
 
     @Override

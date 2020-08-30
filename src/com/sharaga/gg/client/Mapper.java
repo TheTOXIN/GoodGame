@@ -19,7 +19,7 @@ public class Mapper {
         String[] fields = string.split("\n");
         for (String str : fields) {
             if (str.substring(0, str.indexOf(":")).equals(param)) {
-                return str.substring(str.indexOf(":") + 1, str.length());
+                return str.substring(str.indexOf(":") + 1);
             }
         }
 

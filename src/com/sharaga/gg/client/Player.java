@@ -7,6 +7,7 @@ import java.awt.Point;
 import java.awt.Rectangle;
 
 public class Player {
+
 	private String name;
 	private Color color;
 	private State state;

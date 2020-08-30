@@ -5,6 +5,7 @@ import com.sharaga.gg.server.model.User;
 import com.sharaga.gg.server.service.PlayerService;
 import com.sharaga.gg.server.service.UserService;
 import com.sharaga.gg.server.service.WoldService;
+import com.sharaga.gg.utill.Const;
 import com.sharaga.gg.utill.Parse;
 import com.sharaga.gg.utill.Rule;
 import com.sharaga.gg.utill.State;
@@ -72,7 +73,9 @@ public class Eventer {
         user.setReady(true);
 
         if (UserService.allReady(Server.users)) {
-            String map = Parse.build(Rule.MAP, WoldService.string(server.game.world));
+            String world = WoldService.string(server.game.world);
+            String map = Parse.build(Rule.MAP, world);
+
             server.sender.sendAll(map);
             UserService.offReady(Server.users);
         }

@@ -2,18 +2,18 @@ package com.sharaga.gg.server;
 
 import com.sharaga.gg.server.model.Bomb;
 import com.sharaga.gg.server.model.Player;
-import com.sharaga.gg.server.model.User;
 import com.sharaga.gg.server.model.World;
 import com.sharaga.gg.server.service.BombService;
-import com.sharaga.gg.server.service.UserService;
 import com.sharaga.gg.server.service.WoldService;
+import com.sharaga.gg.utill.Const;
 import com.sharaga.gg.utill.Index;
-import com.sharaga.gg.utill.Settings;
 import com.sharaga.gg.utill.State;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
+
+import static com.sharaga.gg.utill.Const.MAGIC;
+import static java.lang.System.nanoTime;
 
 public class Game {
 
@@ -36,33 +36,61 @@ public class Game {
     }
 
     private void loop() {
+        boolean updater;
+
+        double firstTime;
+        double passedTime;
+        double unprocessedTime = 0;
+        double lastTime = nanoTime() / MAGIC;
+
         while (isStart) {
-            for (Bomb bomb : bombs) {
-                int oldX = bomb.getX();
-                int oldY = bomb.getY();
+            updater = false;
 
-                switch (bomb.getState()) {
-                    case UP: bomb.setY(bomb.getY() - 1); break;
-                    case LEFT: bomb.setX(bomb.getX() - 1); break;
-                    case RIGHT: bomb.setX(bomb.getX() + 1); break;
-                    case DOWN: bomb.setY(bomb.getY() + 1); break;
-                }
+            firstTime = nanoTime() / MAGIC;
+            passedTime = firstTime - lastTime;
+            lastTime = firstTime;
 
-                if (BombService.moving(bomb, world)) {
-                    world.getMatrix()[bomb.getY()][bomb.getX()] = Index.BOMB.name();
-                    world.getMatrix()[oldY][oldX] = Index.EMPTY.name();
-                } else {
-                    world.getMatrix()[oldY][oldX] = Index.EMPTY.name();
-                    bombs.remove(bomb);
-                    break;
-                }
+            unprocessedTime += passedTime;
+
+            while (unprocessedTime >= Const.FPS) {
+                unprocessedTime -= Const.FPS;
+                updater = true;
             }
 
-            sleep();
+            if (updater) {
+                update();
+            } else {
+                sleep();
+            }
+        }
+    }
+
+    public void update() {
+        for (Bomb bomb : bombs) {
+            int oldX = bomb.getX();
+            int oldY = bomb.getY();
+
+            switch (bomb.getState()) {
+                case UP: bomb.setY(bomb.getY() - 1); break;
+                case LEFT: bomb.setX(bomb.getX() - 1); break;
+                case RIGHT: bomb.setX(bomb.getX() + 1); break;
+                case DOWN: bomb.setY(bomb.getY() + 1); break;
+            }
+
+            if (BombService.moving(bomb, world)) {
+                world.getMatrix()[bomb.getY()][bomb.getX()] = Index.BOMB.name();
+                world.getMatrix()[oldY][oldX] = Index.EMPTY.name();
+            } else {
+                world.getMatrix()[oldY][oldX] = Index.EMPTY.name();
+                bombs.remove(bomb);
+                break;
+            }
         }
     }
 
     public void move(Player player, State state) {
+        String[][] matrix = world.getMatrix();
+
         int oldX = player.getX();
         int oldY = player.getY();
 
@@ -77,20 +105,20 @@ public class Game {
 
         boolean valid = WoldService.checking(player.getX(), player.getY());
 
-        if (valid && world.getMatrix()[player.getY()][player.getX()].equals(Index.FOOD.name())) {
+        if (valid && matrix[player.getY()][player.getX()].equals(Index.FOOD.name())) {
             player.setScore(player.getScore() + 1);
             WoldService.spawnFood(world);
-            world.getMatrix()[player.getY()][player.getX()] = Index.EMPTY.name();
+            matrix[player.getY()][player.getX()] = Index.EMPTY.name();
         }
 
         if (valid && WoldService.collision(world, player.getX(), player.getY(), Index.EMPTY)) {
-            world.getMatrix()[oldY][oldX] = Index.EMPTY.name();
+            matrix[oldY][oldX] = Index.EMPTY.name();
         } else {
             player.setX(oldX);
             player.setY(oldY);
         }
 
-        world.getMatrix()[player.getY()][player.getX()] = player.getName();
+        matrix[player.getY()][player.getX()] = player.getName();
     }
 
     private void shoot(Player player) {
@@ -116,12 +144,11 @@ public class Game {
         }
     }
 
-    private void sleep() {
+    public void sleep() {
         try {
-            Thread.sleep(Settings.SPEED);
+            Thread.sleep(1);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
     }
-
 }

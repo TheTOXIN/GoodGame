@@ -2,28 +2,28 @@ package com.sharaga.gg.client;
 
 import com.sharaga.gg.utill.Parse;
 import com.sharaga.gg.utill.Rule;
-import com.sharaga.gg.utill.Settings;
+import com.sharaga.gg.utill.Const;
 
 public class Service {
 
     private Connector con;
-    private Game game;
+    private Room room;
 
-    public Service(Connector con, Game game) {
+    public Service(Connector con, Room room) {
         this.con = con;
-        this.game = game;
+        this.room = room;
     }
 
     public void login() {
-        con.send(Parse.build(Rule.CON, game.nick));
+        con.send(Parse.build(Rule.CON, room.nick));
         String data = con.receive();
         Rule answer = Parse.getRule(data);
         con.isConnected = answer == Rule.TRU;
-        if (answer == Rule.TRU) game.players.put(game.nick, Mapper.toPlayer(Parse.getMes(data)));
+        if (answer == Rule.TRU) room.players.put(room.nick, Mapper.toPlayer(Parse.getMes(data)));
     }
 
     public void logout() {
-        con.send(Parse.build(Rule.DIS, game.nick));
+        con.send(Parse.build(Rule.DIS, room.nick));
     }
 
     public void start() {
@@ -40,14 +40,14 @@ public class Service {
 
                 if (Rule.CON == rule) {
                     Player p = Mapper.toPlayer(message);
-                    game.players.put(p.getName(), p);
+                    room.players.put(p.getName(), p);
                 } else if (Rule.DIS == rule) {
-                    game.players.remove(message);
+                    room.players.remove(message);
                 } else if (Rule.MAP == rule) {
-                    game.world = message;
+                    room.world = message;
                 } else if (Rule.STA == rule) {
                     Player newP = Mapper.toPlayer(message);
-                    Player oldP = game.players.get(newP.getName());
+                    Player oldP = room.players.get(newP.getName());
                     oldP.setScore(newP.getScore());
                 }
             }
@@ -55,8 +55,12 @@ public class Service {
     }
 
     public void informer() {
-        if (!game.isSleep) {
-            String message = Parse.buildDelimer(game.getPlayer().getName(), game.getPlayer().getState().toString());
+        if (!room.isSleep) {
+            String message = Parse.buildDelimer(
+                room.getPlayer().getName(),
+                room.getPlayer().getState().toString()
+            );
+
             con.send(Parse.build(Rule.STA, message));
             sleep();
         }
@@ -64,12 +68,11 @@ public class Service {
 
     public void sleep() {
         try {
-            game.isSleep = true;
-            Thread.sleep(Settings.PING);
-            game.isSleep = false;
+            room.isSleep = true;
+            Thread.sleep(Const.PING);
+            room.isSleep = false;
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
     }
-
 }
