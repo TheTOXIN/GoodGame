@@ -10,6 +10,6 @@ public class Const {
     public static final int SIZE = 30;
     public static final int PING = 30;
 
-    public static final double FPS = 1.0 / PING;
+    public static final double FPS = 1.0 / 60;
     public static final double MAGIC = 1000000000.0;
 }
