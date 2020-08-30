@@ -3,6 +3,9 @@ package com.sharaga.gg.client;
 import com.sharaga.gg.utill.Parse;
 import com.sharaga.gg.utill.Rule;
 import com.sharaga.gg.utill.Const;
+import com.sharaga.gg.utill.State;
+
+import static com.sharaga.gg.utill.Parse.buildDelimer;
 
 public class Service {
 
@@ -28,7 +31,7 @@ public class Service {
 
     public void start() {
         listener();
-        informer();
+        informer(State.NONE);
     }
 
     public void listener() {
@@ -54,12 +57,10 @@ public class Service {
         }).start();
     }
 
-    public void informer() {
+    public void informer(State state) {
         if (!room.isSleep) {
-            String message = Parse.buildDelimer(
-                room.getPlayer().getName(),
-                room.getPlayer().getState().toString()
-            );
+            String nick = room.getPlayer().getName();
+            String message = buildDelimer(nick, state.toString());
 
             con.send(Parse.build(Rule.STA, message));
             sleep();

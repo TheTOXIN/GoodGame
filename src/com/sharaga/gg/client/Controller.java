@@ -26,16 +26,15 @@ public class Controller implements KeyListener, ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        player.setPrevState(player.getState());
-        player.setState(State.NONE);
+        State state = State.NONE;
 
-        if (isUp) player.setState(State.UP);
-        if (isLeft) player.setState(State.LEFT);
-        if (isRight) player.setState(State.RIGHT);
-        if (isDown) player.setState(State.DOWN);
-        if (isSpace) player.setState(State.BANG);
+        if (isUp) state = State.UP;
+        if (isLeft) state = State.LEFT;
+        if (isRight) state = State.RIGHT;
+        if (isDown) state = State.DOWN;
+        if (isSpace) state = State.BANG;
 
-        ser.informer();
+        ser.informer(state);
         view.repaint();
     }
 
