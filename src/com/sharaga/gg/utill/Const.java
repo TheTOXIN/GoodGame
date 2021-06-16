@@ -9,8 +9,8 @@ public class Const {
     public static final int H = 20;
 
     public static final int PING = 30;
-    public static final int SPEED = 30;
+    public static final int FPS = 60;
 
-    public static final double FPS = 1.0 / 60;
-    public static final double MAGIC = 1000000000.0;
+    public static final double MAGIC = 1000000000;
+    public static final double FPS_PER_UPD = (long) ((1.0d / FPS) * MAGIC);
 }

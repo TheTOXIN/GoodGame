@@ -1,7 +1,5 @@
 package com.sharaga.gg.client;
 
-import com.sharaga.gg.utill.Const;
-
 import javax.swing.*;
 
 import static com.sharaga.gg.utill.Const.*;
@@ -30,7 +28,7 @@ public class Window extends JFrame {
     }
 
     private void timer(Controller control) {
-        Timer timer = new Timer(SPEED, control);
+        Timer timer = new Timer(FPS, control);
 
         timer.setInitialDelay(0);
         timer.start();

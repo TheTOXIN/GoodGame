@@ -12,7 +12,7 @@ import com.sharaga.gg.utill.State;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.sharaga.gg.utill.Const.MAGIC;
+import static com.sharaga.gg.utill.Const.*;
 import static java.lang.System.nanoTime;
 
 public class Game {
@@ -36,31 +36,46 @@ public class Game {
     }
 
     private void loop() {
-        boolean updater;
+        boolean updater = false;
 
-        double firstTime;
-        double passedTime;
-        double unprocessedTime = 0;
-        double lastTime = nanoTime() / MAGIC;
+        long tickTime = 0;
+        long ticks = 0;
+
+        long currTime;
+        long deltaTime;
+
+        long unprocessedTime = 0;
+        long prevTime = nanoTime();
 
         while (isStart) {
-            updater = false;
+            currTime = nanoTime();
 
-            firstTime = nanoTime() / MAGIC;
-            passedTime = firstTime - lastTime;
-            lastTime = firstTime;
+            deltaTime = currTime - prevTime;
+            prevTime = currTime;
 
-            unprocessedTime += passedTime;
+            unprocessedTime += deltaTime;
+            tickTime += deltaTime;
 
-            while (unprocessedTime >= Const.FPS) {
-                unprocessedTime -= Const.FPS;
+            while (unprocessedTime >= FPS_PER_UPD) {
+                unprocessedTime -= FPS_PER_UPD;
+                prevTime = nanoTime();
                 updater = true;
+
+                if (tickTime >= MAGIC) {
+                    double tickFPS = ticks / (tickTime / MAGIC);
+                    System.out.println("TICK FPS: " + tickFPS);
+
+                    tickTime = 0;
+                    ticks = 0;
+                }
             }
 
             if (updater) {
                 update();
+                ticks++;
+                updater = false;
             } else {
-                sleep();
+                sleep(1);
             }
         }
     }
@@ -144,9 +159,9 @@ public class Game {
         }
     }
 
-    public void sleep() {
+    public void sleep(int seconds) {
         try {
-            Thread.sleep(Const.PING);
+            Thread.sleep(seconds);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
