@@ -75,7 +75,7 @@ public class Game {
                 ticks++;
                 updater = false;
             } else {
-                sleep(1);
+                sleep(1); //TODO WHY ???
             }
         }
     }
@@ -159,9 +159,9 @@ public class Game {
         }
     }
 
-    public void sleep(int seconds) {
+    public void sleep(int mills) {
         try {
-            Thread.sleep(seconds);
+            Thread.sleep(mills);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
