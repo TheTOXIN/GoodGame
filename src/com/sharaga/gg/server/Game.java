@@ -38,8 +38,8 @@ public class Game {
     private void loop() {
         boolean updater = false;
 
-        long tickTime = 0;
         long ticks = 0;
+        long tickTime = nanoTime();
 
         long currTime;
         long deltaTime;
@@ -54,28 +54,23 @@ public class Game {
             prevTime = currTime;
 
             unprocessedTime += deltaTime;
-            tickTime += deltaTime;
 
             while (unprocessedTime >= FPS_PER_UPD) {
                 unprocessedTime -= FPS_PER_UPD;
                 prevTime = nanoTime();
                 updater = true;
-
-                if (tickTime >= MAGIC) {
-                    double tickFPS = ticks / (tickTime / MAGIC);
-                    System.out.println("TICK FPS: " + tickFPS);
-
-                    tickTime = 0;
-                    ticks = 0;
-                }
             }
 
             if (updater) {
+                updater = false;
                 update();
                 ticks++;
-                updater = false;
-            } else {
-                sleep(1); //TODO WHY ???
+            }
+
+            if (nanoTime() - tickTime >= MAGIC) {
+                System.out.println("TICK FPS: " + ticks);
+                tickTime += MAGIC;
+                ticks = 0;
             }
         }
     }
@@ -86,10 +81,10 @@ public class Game {
             int oldY = bomb.getY();
 
             switch (bomb.getState()) {
-                case UP: bomb.setY(bomb.getY() - 1); break;
-                case LEFT: bomb.setX(bomb.getX() - 1); break;
-                case RIGHT: bomb.setX(bomb.getX() + 1); break;
-                case DOWN: bomb.setY(bomb.getY() + 1); break;
+                case UP -> bomb.setY(bomb.getY() - 1);
+                case LEFT -> bomb.setX(bomb.getX() - 1);
+                case RIGHT -> bomb.setX(bomb.getX() + 1);
+                case DOWN -> bomb.setY(bomb.getY() + 1);
             }
 
             if (BombService.moving(bomb, world)) {
@@ -141,10 +136,10 @@ public class Game {
         int x = player.getX();
 
         switch (player.getState()) {
-            case UP: y -= 1; break;
-            case LEFT: x -= 1; break;
-            case RIGHT: x += 1; break;
-            case DOWN: y += 1; break;
+            case UP -> y -= 1;
+            case LEFT -> x -= 1;
+            case RIGHT -> x += 1;
+            case DOWN -> y += 1;
         }
 
         Bomb bomb = new Bomb();
@@ -156,14 +151,6 @@ public class Game {
 
         if (!BombService.having(bombs, player.getName()) && BombService.moving(bomb, world)) {
             bombs.add(bomb);
-        }
-    }
-
-    public void sleep(int mills) {
-        try {
-            Thread.sleep(mills);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
         }
     }
 }

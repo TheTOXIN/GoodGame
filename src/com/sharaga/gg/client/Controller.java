@@ -52,13 +52,12 @@ public class Controller implements KeyListener, ActionListener {
     }
 
     private void processKey(int code, boolean press) {
-        switch (code) //c++ style :D
-        {
-            case KeyEvent.VK_W :    isUp       = press; break;
-            case KeyEvent.VK_A :    isLeft     = press; break;
-            case KeyEvent.VK_S :    isDown     = press; break;
-            case KeyEvent.VK_D :    isRight    = press; break;
-            case KeyEvent.VK_SPACE: isSpace    = press; break;
+        switch (code) {
+            case KeyEvent.VK_W -> isUp = press;
+            case KeyEvent.VK_A -> isLeft = press;
+            case KeyEvent.VK_S -> isDown = press;
+            case KeyEvent.VK_D -> isRight = press;
+            case KeyEvent.VK_SPACE -> isSpace = press;
         }
     }
 }
