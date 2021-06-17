@@ -36,23 +36,25 @@ public class Game {
     }
 
     private void loop() {
-        boolean updater = false;
+        boolean updater;
+        long countTicks = 0;
 
-        long ticks = 0;
-        long tickTime = nanoTime();
+        long frames = 0;
+        long frameTime = nanoTime();
 
         long currTime;
-        long deltaTime;
-
-        long unprocessedTime = 0;
         long prevTime = nanoTime();
 
+        long deltaTime;
+        long unprocessedTime = 0;
+
         while (isStart) {
+            updater = false;
+
             currTime = nanoTime();
-
             deltaTime = currTime - prevTime;
-            prevTime = currTime;
 
+            prevTime = currTime;
             unprocessedTime += deltaTime;
 
             while (unprocessedTime >= FPS_PER_UPD) {
@@ -62,15 +64,15 @@ public class Game {
             }
 
             if (updater) {
-                updater = false;
+                countTicks++;
+                frames++;
                 update();
-                ticks++;
             }
 
-            if (nanoTime() - tickTime >= MAGIC) {
-                System.out.println("TICK FPS: " + ticks);
-                tickTime += MAGIC;
-                ticks = 0;
+            if (nanoTime() - frameTime >= MAGIC) {
+                System.out.printf("TICKS: %d | FPS: %d %n", countTicks, frames);
+                frameTime += MAGIC;
+                frames = 0;
             }
         }
     }
